@@ -3,11 +3,11 @@ import 'package:lettutor/Screens/Login/components/text_field_container.dart';
 
 import '../../../constant.dart';
 
-class RounderInputField extends StatelessWidget {
+class RoundedInputField extends StatelessWidget {
   final String hint;
   final IconData icon;
   final ValueChanged<String> onChanged;
-  const RounderInputField({
+  const RoundedInputField({
     Key? key,
     required this.hint,
     this.icon = Icons.person,

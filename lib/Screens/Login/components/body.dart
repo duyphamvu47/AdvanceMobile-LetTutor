@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lettutor/Screens/Login/components/rounded_input_field.dart';
 import 'package:lettutor/Screens/Login/components/rounded_password_field.dart';
+import 'package:lettutor/Screens/Signup/sign_up_screen.dart';
 import 'package:lettutor/components/rounded_button.dart';
 import 'package:lettutor/constant.dart';
 
@@ -31,7 +32,7 @@ class Body extends StatelessWidget {
               height: size.height * 0.35
             ),
             SizedBox(height: size.height * 0.03,),
-            RounderInputField(
+            RoundedInputField(
               hint: "Username",
               onChanged: (value){},
             ),
@@ -44,7 +45,17 @@ class Body extends StatelessWidget {
             ),
             SizedBox(height: size.height * 0.03,),
             AlreadyHaveAccountCheck(
-              press: () {},
+              login: true,
+              press: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return SingUpScreen();
+                    },
+                  ),
+                );
+              },
             ),
           ],
         ),
