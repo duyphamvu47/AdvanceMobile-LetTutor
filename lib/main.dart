@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:lettutor/Screens/Welcome/welcome_screen.dart';
 import 'package:lettutor/constant.dart';
 
+import 'components/bottom_navigation.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -16,10 +18,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Log In',
       theme: ThemeData(
-        primaryColor: kPrimaryColor,
-        scaffoldBackgroundColor: Colors.white
+        // primaryColor: kPrimaryColor,
+        // scaffoldBackgroundColor: Colors.white
+          fontFamily: 'WorkSans',
       ),
-      home: WelcomeScreen(),
+      home: RootApp(),
     );
   }
 }
