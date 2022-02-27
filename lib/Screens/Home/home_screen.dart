@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lettutor/Screens/CourseDetail/course_detail_screen.dart';
 
 import 'components/clipper.dart';
 import 'components/custom_course_card.dart';
@@ -119,7 +120,13 @@ class _HomePageState extends State<HomePage> {
                     padding: const EdgeInsets.only(right: 15.0, bottom: 20.0),
                     child: GestureDetector(
                       onTap: () {
-
+                          Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context){
+                                    return CourseDetail();
+                                  }
+                              ),
+                          );
                       },
                       child: CustomCourseCardExpand(
                         thumbNail: data['image'],
