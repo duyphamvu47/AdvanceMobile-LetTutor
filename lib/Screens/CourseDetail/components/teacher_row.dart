@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../components/circle_image.dart';
+
 class TeacherRow extends StatelessWidget {
   final String name;
   final Image avatar;
@@ -34,13 +36,7 @@ class TeacherRow extends StatelessWidget {
         onTap: onPress,
         child: Row(
           children: [
-            Hero(
-              tag: "Teacher avatar",
-              child: CircleAvatar(
-                radius: 40,
-                backgroundImage: avatar.image,
-              ),
-            ),
+            CircleImage(avatar: avatar),
             SizedBox(
               width: 24,
             ),

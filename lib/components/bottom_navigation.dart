@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:lettutor/constant.dart';
 
+import '../Screens/Account/account_screen.dart';
 import '../Screens/Home/home_screen.dart';
 
 class RootApp extends StatefulWidget {
@@ -25,7 +26,7 @@ class _RootAppState extends State<RootApp> {
       HomePage(),
       HomePage(),
       HomePage(),
-      HomePage(),
+      ManagementPage(),
     ];
     return IndexedStack(
       index: pageIndex,
