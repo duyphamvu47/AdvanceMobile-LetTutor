@@ -76,10 +76,11 @@ class _HomePageState extends State<HomePage> {
                             width: spacer,
                             child: ClipRRect(
                                 borderRadius: BorderRadius.circular(100),
-                                child: Image.asset(
-                                  "assets/images/user_profile.jpg",
+                                child: Image.asset("assets/images/user_profile.jpg",
                                   fit: BoxFit.cover,
-                                ))),
+                                ),
+                            ),
+                        ),
                       ],
                     ),
                     SizedBox(height: spacer),
