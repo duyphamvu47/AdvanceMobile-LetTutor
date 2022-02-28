@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:lettutor/Screens/Search/SearchScreen.dart';
 import 'package:lettutor/constant.dart';
 
 import '../Screens/Account/account_screen.dart';
@@ -25,7 +26,7 @@ class _RootAppState extends State<RootApp> {
     List<Widget> pages = [
       HomePage(),
       HomePage(),
-      HomePage(),
+      ExplorePage(),
       ManagementPage(),
     ];
     return IndexedStack(
@@ -35,7 +36,7 @@ class _RootAppState extends State<RootApp> {
   }
 
   Widget getFooter() {
-    var size = MediaQuery.of(context).size;
+    Size size = MediaQuery.of(context).size;
     List bottomItems = [
       "assets/icons/home_icon.svg",
       "assets/icons/play_icon.svg",
@@ -44,7 +45,7 @@ class _RootAppState extends State<RootApp> {
     ];
     return Container(
       width: size.width,
-      height: 100,
+      height: size.height * 0.08,
       decoration: BoxDecoration(
         color: Colors.white,
 
@@ -63,7 +64,7 @@ class _RootAppState extends State<RootApp> {
         ),
         child: Padding(
           padding:
-          const EdgeInsets.only(left: 40, right: 40, bottom: 10, top: 30),
+          const EdgeInsets.only(left: 40, right: 40, bottom: 10, top: 15),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -76,15 +77,15 @@ class _RootAppState extends State<RootApp> {
                     children: [
                       SvgPicture.asset(
                         bottomItems[index],
-                        height: 17.5,
-                        color: pageIndex == index ? kPrimaryColor : kPrimaryLightColor,
+                        height: size.height * 0.025,
+                        color: pageIndex == index ? kPrimaryColor : kSecondaryColor,
                       ),
                       SizedBox(
-                        height: 15.0,
+                        height: 5,
                       ),
                       (pageIndex == index)
                           ? AnimatedContainer(
-                        duration: Duration(milliseconds: 500),
+                        duration: Duration(milliseconds: 1000),
                         curve: Curves.easeIn,
                         child: Container(
                           height: 5.0,

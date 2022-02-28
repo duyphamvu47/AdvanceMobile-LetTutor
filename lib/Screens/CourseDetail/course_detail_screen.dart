@@ -100,7 +100,7 @@ class CourseDetail extends StatelessWidget {
                               ),
                               CourseFeatureRow(
                                 title: 'Document',
-                                content: 'Text book, exercise, lession video',
+                                content: 'Text book, exercise',
                                 color: Colors.pinkAccent,
                                 icon: Icons.folder_outlined,
                               ),

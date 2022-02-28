@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lettutor/Screens/CourseDetail/course_detail_screen.dart';
 
 import 'components/clipper.dart';
@@ -29,7 +30,7 @@ class _HomePageState extends State<HomePage> {
         child: AppBar(
           elevation: 0.0,
           backgroundColor: Colors.transparent,
-          brightness: Brightness.dark,
+          systemOverlayStyle: SystemUiOverlayStyle.light,
         ),
       ),
       body: getBody(),
