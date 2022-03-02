@@ -5,6 +5,7 @@ import 'package:lettutor/constant.dart';
 
 import '../Screens/Account/account_screen.dart';
 import '../Screens/Home/home_screen.dart';
+import '../Screens/MyCourse/my_courses.dart';
 
 class RootApp extends StatefulWidget {
   @override
@@ -25,7 +26,7 @@ class _RootAppState extends State<RootApp> {
   Widget getBody() {
     List<Widget> pages = [
       HomePage(),
-      HomePage(),
+      MyCoursesPage(),
       ExplorePage(),
       ManagementPage(),
     ];
