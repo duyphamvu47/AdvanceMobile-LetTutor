@@ -10,7 +10,7 @@ class InstructionText extends StatelessWidget {
   const InstructionText({
     Key? key,
     required this.press,
-    required this.text_1,
+    this.text_1 = "",
     this.text_2 = "",
     this.textColor = kPrimaryColor
   }) : super(key: key);

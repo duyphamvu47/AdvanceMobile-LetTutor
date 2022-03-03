@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:lettutor/Screens/OTPScreen/otp_screen.dart';
+import 'package:lettutor/components/instruction_text.dart';
 
 import '../../../components/rounded_button.dart';
 import '../../Login/components/background.dart';
 import '../../Login/components/rounded_input_field.dart';
-import '../../Login/components/rounded_password_field.dart';
 
 class Body extends StatelessWidget {
+  final String email;
   const Body({
     Key? key,
+    required this.email,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    String email = "";
     Size size = MediaQuery.of(context).size;
     return Background(
       child: SingleChildScrollView(
@@ -22,36 +22,32 @@ class Body extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              "FORGOT PASSWORD",
+              "OTP CONFIRMATION",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: size.height * 0.03,),
-            SvgPicture.asset("assets/icons/login.svg",
-                height: size.height * 0.35
+            SizedBox(height: size.height * 0.1,),
+            InstructionText(
+                press: (){},
+                text_2: "We have sent you an verification code to your email",
             ),
             SizedBox(height: size.height * 0.03,),
             RoundedInputField(
-              hint: "Your email",
-              onChanged: (value){
-                email = value;
-              },
+              hint: "Verification code",
+              onChanged: (value){},
             ),
             RoundedButton(
                 text: "Reset password",
                 press: (){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return OTPScreen(
-                          email: email,
-                        );
-                      },
-                    ),
-                  );
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) {
+                  //       return RootApp();
+                  //     },
+                  //   ),
+                  // );
                 }
             ),
-            SizedBox(height: size.height * 0.03,),
           ],
         ),
       ),
