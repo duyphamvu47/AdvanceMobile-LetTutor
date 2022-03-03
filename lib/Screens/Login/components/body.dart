@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lettutor/Screens/Login/components/forgot_password_title.dart';
 import 'package:lettutor/Screens/Login/components/rounded_input_field.dart';
 import 'package:lettutor/Screens/Login/components/rounded_password_field.dart';
 import 'package:lettutor/Screens/Signup/sign_up_screen.dart';
+import 'package:lettutor/components/bottom_navigation.dart';
 import 'package:lettutor/components/rounded_button.dart';
 import 'package:lettutor/constant.dart';
 
+import '../../ForgotPassword/forgot_password.dart';
 import '../../Welcome/components/background.dart';
 import 'already_have_an_account_check.dart';
 
@@ -41,21 +44,29 @@ class Body extends StatelessWidget {
             ),
             RoundedButton(
                 text: "LOGIN",
-                press: (){}
+                press: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return RootApp();
+                      },
+                    ),
+                  );
+                }
             ),
             SizedBox(height: size.height * 0.03,),
-            AlreadyHaveAccountCheck(
-              login: true,
-              press: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return SingUpScreen();
-                    },
-                  ),
-                );
-              },
+            ForgotPasswordTitle(
+                press: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return ForgotPassword();
+                      },
+                    ),
+                  );
+                }
             ),
           ],
         ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/Screens/Account/components/setting_item.dart';
+import 'package:lettutor/Screens/Welcome/welcome_screen.dart';
 
 import '../../../constant.dart';
 
@@ -112,7 +113,14 @@ class Body extends StatelessWidget {
                     leadingIcon: "assets/icons/logout.svg",
                     bgIconColor: Color(0xFFf5bde8),
                     onTap: (){
-
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return WelcomeScreen();
+                          },
+                        ),
+                      );
                     },
                   ),
                 ]
