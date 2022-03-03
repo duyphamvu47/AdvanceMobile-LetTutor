@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:lettutor/Screens/ResetPasword/reset_password_screen.dart';
 import 'package:lettutor/components/instruction_text.dart';
 
 import '../../../components/rounded_button.dart';
@@ -36,16 +37,16 @@ class Body extends StatelessWidget {
               onChanged: (value){},
             ),
             RoundedButton(
-                text: "Reset password",
+                text: "DONE",
                 press: (){
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) {
-                  //       return RootApp();
-                  //     },
-                  //   ),
-                  // );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return ResetPasswordScreen();
+                      },
+                    ),
+                  );
                 }
             ),
           ],
