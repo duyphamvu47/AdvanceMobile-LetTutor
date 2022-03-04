@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:lettutor/Screens/Search/SearchScreen.dart';
 import 'package:lettutor/constant.dart';
 
-import '../Screens/Account/account_screen.dart';
+import '../Screens/Manage/account_screen.dart';
 import '../Screens/Home/home_screen.dart';
 import '../Screens/MyCourse/my_courses.dart';
 
