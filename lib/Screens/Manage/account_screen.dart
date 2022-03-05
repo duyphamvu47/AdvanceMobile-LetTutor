@@ -9,15 +9,17 @@ class ManagementPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return
-      SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Header(
-              name: 'Duy',
-              avatar: Image.asset("assets/images/user_profile.jpg"),
-            ),
-            Body(),
-          ],
+      Scaffold(
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Header(
+                name: 'Duy',
+                avatar: Image.asset("assets/images/user_profile.jpg"),
+              ),
+              Body(),
+            ],
+          ),
         ),
       );
     }

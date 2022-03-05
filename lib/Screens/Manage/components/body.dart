@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/Screens/Manage/components/setting_item.dart';
+import 'package:lettutor/Screens/ProfileSettings/profile_settings_screen.dart';
 import 'package:lettutor/Screens/Settings/settings_screen.dart';
 import 'package:lettutor/Screens/Welcome/welcome_screen.dart';
+import 'header.dart';
 
 import '../../../constant.dart';
 
@@ -37,7 +39,14 @@ class Body extends StatelessWidget {
                     leadingIcon: "assets/icons/profile.svg",
                     bgIconColor: Color(0xFF509BE4),
                     onTap: (){
-
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return ProfileSettingsPage();
+                          },
+                        ),
+                      );
                     },
                   ),
                   Padding(
