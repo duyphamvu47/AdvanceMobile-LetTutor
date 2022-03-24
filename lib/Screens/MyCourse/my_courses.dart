@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:lettutor/ViewModel/MyCoursesViewModel.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 import '../../constant.dart';
 import '../../data/courses_json.dart';
@@ -15,32 +17,41 @@ class MyCoursesPage extends StatefulWidget {
 }
 
 class _MyCoursesPageState extends State<MyCoursesPage> {
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: background,
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        elevation: 0.0,
-        brightness: Brightness.light,
-        backgroundColor: Colors.transparent,
+    return ScopedModel(
+      model: MyCourseViewModel.instance,
+      child: Scaffold(
+        backgroundColor: background,
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          elevation: 0.0,
+          brightness: Brightness.light,
+          backgroundColor: Colors.transparent,
+        ),
+        body: getBody(),
       ),
-      body: getBody(),
     );
   }
 
   Widget getBody() {
     var size = MediaQuery.of(context).size;
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(appPadding),
-      child: Column(
-        children: [
-          SizedBox(height: spacer - 1.0),
-          MyCourseHeader(),
-          SizedBox(height: spacer),
-          MyCourseList(),
-        ],
-      ),
+
+    return ScopedModelDescendant<MyCourseViewModel>(
+      builder: (BuildContext context, Widget? child, MyCourseViewModel model){
+        return SingleChildScrollView(
+          padding: const EdgeInsets.all(appPadding),
+          child: Column(
+            children: [
+              SizedBox(height: spacer - 1.0),
+              MyCourseHeader(),
+              SizedBox(height: spacer),
+              MyCourseList(),
+            ],
+          ),
+        );
+      }
     );
   }
 }

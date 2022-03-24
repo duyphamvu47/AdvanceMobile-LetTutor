@@ -8,17 +8,11 @@ class CustomCourseCardExpand extends StatefulWidget {
     required this.thumbNail,
     required this.videoAmount,
     required this.title,
-    required this.userProfile,
-    required this.userName,
-    required this.price,
   }) : super(key: key);
 
   final String thumbNail;
   final String videoAmount;
   final String title;
-  final String userProfile;
-  final String userName;
-  final String price;
 
   @override
   _CustomCourseCardExpandState createState() => _CustomCourseCardExpandState();
@@ -98,50 +92,51 @@ class _CustomCourseCardExpandState extends State<CustomCourseCardExpand> {
             ),
           ),
           SizedBox(height: 15.0),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 7.0,
-              right: 7.0,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  height: 30.0,
-                  width: 30.0,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(100.0),
-                    child: Image.network(
-                      widget.userProfile,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                SizedBox(width: 10),
-                Flexible(
-                  child: Container(
-                    width: size.width,
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      widget.userName,
-                      style: TextStyle(
-                        color: kPrimaryColor,
-                        fontSize: 13.0,
-                      ),
-                    ),
-                  ),
-                ),
-                Text(
-                  '\$${widget.price}',
-                  style: TextStyle(
-                    color: kPrimaryColor,
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ],
-            ),
-          ),
+          // Teacher
+          // Padding(
+          //   padding: const EdgeInsets.only(
+          //     left: 7.0,
+          //     right: 7.0,
+          //   ),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //     children: [
+          //       Container(
+          //         height: 30.0,
+          //         width: 30.0,
+          //         child: ClipRRect(
+          //           borderRadius: BorderRadius.circular(100.0),
+          //           child: Image.network(
+          //             widget.userProfile,
+          //             fit: BoxFit.cover,
+          //           ),
+          //         ),
+          //       ),
+          //       SizedBox(width: 10),
+          //       Flexible(
+          //         child: Container(
+          //           width: size.width,
+          //           alignment: Alignment.centerLeft,
+          //           child: Text(
+          //             widget.userName,
+          //             style: TextStyle(
+          //               color: kPrimaryColor,
+          //               fontSize: 13.0,
+          //             ),
+          //           ),
+          //         ),
+          //       ),
+          //       Text(
+          //         '\$${widget.price}',
+          //         style: TextStyle(
+          //           color: kPrimaryColor,
+          //           fontSize: 15.0,
+          //           fontWeight: FontWeight.w700,
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
           SizedBox(height: 5),
         ],
       ),
