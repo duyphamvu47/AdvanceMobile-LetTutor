@@ -30,4 +30,23 @@ class Authentication {
     }
     return false;
   }
+
+  bool isUserExistence(String id){
+    String password = "";
+    password = sharedPreferences.getString(id);
+    if (password != null){
+      return true;
+    }
+    return false;
+  }
+
+  bool changePassword(String ID, String password){
+    if (isUserExistence(ID)){
+      sharedPreferences.setString(ID, password);
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
 }

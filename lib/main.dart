@@ -6,7 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'components/bottom_navigation.dart';
 
 void main() {
-  checkLoginStatus().then((value) => runApp(MyApp(isLogin: value)));
+  checkLoginStatus().then((value) => runApp(MyApp(isLogin: value)))
+      .catchError((onError) => runApp(const MyApp(isLogin: false)));
   // runApp(const MyApp());
 }
 
