@@ -131,7 +131,7 @@ class _HomePageState extends State<HomePage> {
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                   builder: (context){
-                                    return CourseDetail();
+                                    return CourseDetail(course: data,);
                                   }
                               ),
                             );
@@ -140,9 +140,6 @@ class _HomePageState extends State<HomePage> {
                             thumbNail: data.imageUrl ?? "",
                             videoAmount: data.topics?.length.toString() ?? "0",
                             title: data.name ?? "",
-                            // userProfile: data.imageUrl ?? "",
-                            // userName: data.name ?? "",
-                            // price: data.coursePrice?.toString() ?? "",
                           ),
                         ),
                       );

@@ -11,15 +11,15 @@ void main() {
   // runApp(const MyApp());
 }
 
-Future<bool> checkLoginStatus() async{
-  SharedPreferences preferences = await SharedPreferences.getInstance();
-  String? ID = "";
-  ID = preferences.getString("Login");
-  if (ID != null){
-    return true;
-  }
-  return false;
-}
+    Future<bool> checkLoginStatus() async{
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      String? ID = "";
+      ID = preferences.getString("Login");
+      if (ID != null){
+        return true;
+      }
+      return false;
+    }
 
 class MyApp extends StatelessWidget {
   final bool isLogin;
@@ -40,4 +40,5 @@ class MyApp extends StatelessWidget {
         home: isLogin ?  RootApp() : WelcomeScreen(),
       );
   }
+
 }

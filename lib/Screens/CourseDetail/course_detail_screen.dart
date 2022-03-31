@@ -1,16 +1,18 @@
 import 'dart:core';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:lettutor/components/rounded_button.dart';
+import '../../model/Course.dart';
 import 'components/course_feature.dart';
 import 'components/header.dart';
 import 'components/section_title.dart';
 import 'components/teacher_row.dart';
 
 class CourseDetail extends StatelessWidget {
-  final val;
+  final Course course;
 
-  const CourseDetail({Key? key, this.val}) : super(key: key);
+  const CourseDetail({Key? key, required this.course}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -59,9 +61,9 @@ class CourseDetail extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CourseDetailHeader(
-                          courseName: 'Advance Mobile',
-                          courseIcon: Image.asset("assets/images/user_profile.jpg"),
-                          description: "Beginer",
+                          courseName: course.name ?? "Course name",
+                          courseIcon: course.imageUrl != null ? Image.network(course.imageUrl ?? "") : Image.asset("assets/images/user_profile.jpg"),
+                          description: course.description ?? "",
                         ),
                         SizedBox(
                           height: 24,
@@ -70,7 +72,7 @@ class CourseDetail extends StatelessWidget {
                           title: "The Course Includes",
                         ),
                         Container(
-                          height: 300,
+                          height: 100.0 * (getTopics().length),
                           margin: EdgeInsets.symmetric(vertical: 0, horizontal: 24),
                           padding: EdgeInsets.symmetric(
                               vertical: 24, horizontal: 16),
@@ -85,26 +87,19 @@ class CourseDetail extends StatelessWidget {
                               ]),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              CourseFeatureRow(
-                                title: 'Schedule',
-                                content: 'Every Tuesday 13:30',
-                                color: Colors.deepPurpleAccent,
-                                icon: Icons.videocam_outlined,
+                            children:
+                              List.generate(getTopics().length, (index) {
+                                var topic = course.topics![index];
+                                return Flexible(
+                                  child: CourseFeatureRow(
+                                    title: topic.name ?? "",
+                                    content: "With document",
+                                    color: Colors.deepPurpleAccent,
+                                    icon: Icons.videocam_outlined,
+                                  ),
+                                );
+                              }
                               ),
-                              CourseFeatureRow(
-                                title: 'Duration',
-                                content: '4 hrs lession',
-                                color: Colors.cyan,
-                                icon: Icons.bookmark_border_rounded,
-                              ),
-                              CourseFeatureRow(
-                                title: 'Document',
-                                content: 'Text book, exercise',
-                                color: Colors.pinkAccent,
-                                icon: Icons.folder_outlined,
-                              ),
-                            ],
                           ),
                         ),
                         SectionTitle(
@@ -140,6 +135,11 @@ class CourseDetail extends StatelessWidget {
         ),
       ),
     );
+  }
+
+
+  List<Topics> getTopics(){
+    return course.topics?.where((element) => (element.name?.length ?? 0) <= 20).toList() ?? [];
   }
 }
 

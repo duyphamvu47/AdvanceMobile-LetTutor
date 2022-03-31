@@ -38,6 +38,7 @@ dependencies:
   font_awesome_flutter: ^9.2.0
   shared_preferences: ^2.0.13
   scoped_model: ^2.0.0-nullsafety.0
+  http: ^0.13.4
 
 
 dev_dependencies:
@@ -66,7 +67,7 @@ flutter:
   assets:
   - assets/images/
   - assets/icons/
-  - assets/data/
+  - assets/data/course.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

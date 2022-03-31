@@ -15,7 +15,7 @@ class Course {
   String? createdAt;
   String? updatedAt;
   List<Topics>? topics;
-  List<Categories>? categories;
+  List<Users>? users;
 
   Course(
       {this.id,
@@ -34,7 +34,7 @@ class Course {
         this.createdAt,
         this.updatedAt,
         this.topics,
-        this.categories});
+        this.users});
 
   Course.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -58,10 +58,10 @@ class Course {
         topics!.add(new Topics.fromJson(v));
       });
     }
-    if (json['categories'] != null) {
-      categories = <Categories>[];
-      json['categories'].forEach((v) {
-        categories!.add(new Categories.fromJson(v));
+    if (json['users'] != null) {
+      users = <Users>[];
+      json['users'].forEach((v) {
+        users!.add(new Users.fromJson(v));
       });
     }
   }
@@ -86,8 +86,8 @@ class Course {
     if (this.topics != null) {
       data['topics'] = this.topics!.map((v) => v.toJson()).toList();
     }
-    if (this.categories != null) {
-      data['categories'] = this.categories!.map((v) => v.toJson()).toList();
+    if (this.users != null) {
+      data['users'] = this.users!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -142,37 +142,138 @@ class Topics {
   }
 }
 
-class Categories {
+class Users {
   String? id;
-  String? title;
-  Null? description;
-  String? key;
+  String? level;
+  String? email;
+  Null? google;
+  Null? facebook;
+  Null? apple;
+  String? password;
+  String? avatar;
+  String? name;
+  String? country;
+  String? phone;
+  String? language;
+  String? birthday;
+  bool? requestPassword;
+  bool? isActivated;
+  Null? isPhoneActivated;
+  Null? requireNote;
+  int? timezone;
+  Null? phoneAuth;
+  bool? isPhoneAuthActivated;
+  String? createdAt;
+  String? updatedAt;
+  Null? deletedAt;
+  TutorCourse? tutorCourse;
+
+  Users(
+      {this.id,
+        this.level,
+        this.email,
+        this.google,
+        this.facebook,
+        this.apple,
+        this.password,
+        this.avatar,
+        this.name,
+        this.country,
+        this.phone,
+        this.language,
+        this.birthday,
+        this.requestPassword,
+        this.isActivated,
+        this.isPhoneActivated,
+        this.requireNote,
+        this.timezone,
+        this.phoneAuth,
+        this.isPhoneAuthActivated,
+        this.createdAt,
+        this.updatedAt,
+        this.deletedAt,
+        this.tutorCourse});
+
+  Users.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    level = json['level'];
+    email = json['email'];
+    google = json['google'];
+    facebook = json['facebook'];
+    apple = json['apple'];
+    password = json['password'];
+    avatar = json['avatar'];
+    name = json['name'];
+    country = json['country'];
+    phone = json['phone'];
+    language = json['language'];
+    birthday = json['birthday'];
+    requestPassword = json['requestPassword'];
+    isActivated = json['isActivated'];
+    isPhoneActivated = json['isPhoneActivated'];
+    requireNote = json['requireNote'];
+    timezone = json['timezone'];
+    phoneAuth = json['phoneAuth'];
+    isPhoneAuthActivated = json['isPhoneAuthActivated'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    deletedAt = json['deletedAt'];
+    tutorCourse = json['TutorCourse'] != null
+        ? new TutorCourse.fromJson(json['TutorCourse'])
+        : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['level'] = this.level;
+    data['email'] = this.email;
+    data['google'] = this.google;
+    data['facebook'] = this.facebook;
+    data['apple'] = this.apple;
+    data['password'] = this.password;
+    data['avatar'] = this.avatar;
+    data['name'] = this.name;
+    data['country'] = this.country;
+    data['phone'] = this.phone;
+    data['language'] = this.language;
+    data['birthday'] = this.birthday;
+    data['requestPassword'] = this.requestPassword;
+    data['isActivated'] = this.isActivated;
+    data['isPhoneActivated'] = this.isPhoneActivated;
+    data['requireNote'] = this.requireNote;
+    data['timezone'] = this.timezone;
+    data['phoneAuth'] = this.phoneAuth;
+    data['isPhoneAuthActivated'] = this.isPhoneAuthActivated;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    data['deletedAt'] = this.deletedAt;
+    if (this.tutorCourse != null) {
+      data['TutorCourse'] = this.tutorCourse!.toJson();
+    }
+    return data;
+  }
+}
+
+class TutorCourse {
+  String? userId;
+  String? courseId;
   String? createdAt;
   String? updatedAt;
 
-  Categories(
-      {this.id,
-        this.title,
-        this.description,
-        this.key,
-        this.createdAt,
-        this.updatedAt});
+  TutorCourse({this.userId, this.courseId, this.createdAt, this.updatedAt});
 
-  Categories.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    title = json['title'];
-    description = json['description'];
-    key = json['key'];
+  TutorCourse.fromJson(Map<String, dynamic> json) {
+    userId = json['UserId'];
+    courseId = json['CourseId'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['title'] = this.title;
-    data['description'] = this.description;
-    data['key'] = this.key;
+    data['UserId'] = this.userId;
+    data['CourseId'] = this.courseId;
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
     return data;
