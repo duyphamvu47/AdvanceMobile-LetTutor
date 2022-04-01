@@ -54,20 +54,7 @@ class Body extends StatelessWidget {
                 RoundedButton(
                     text: "LOGIN",
                     press: (){
-                      var result = model.authenticate();
-                      if (result){
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return RootApp();
-                            },
-                          ),
-                        );
-                      }
-                      else{
-                        loginFail(context);
-                      }
+                      loginBtnPress(context, model);
                     }
                 ),
                 SizedBox(height: size.height * 0.03,),
@@ -94,6 +81,23 @@ class Body extends StatelessWidget {
   void loginFail(BuildContext context) {
 
     Utils.showSnackBar(context, 'Wrong username or password');
+  }
+
+  void loginBtnPress(BuildContext context, LoginViewModel model) async{
+    var result = await model.authenticate();
+    if (result){
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return RootApp();
+          },
+        ),
+      );
+    }
+    else{
+      loginFail(context);
+    }
   }
 
 }

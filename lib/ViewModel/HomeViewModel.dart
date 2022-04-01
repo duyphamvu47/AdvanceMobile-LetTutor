@@ -13,6 +13,7 @@ class HomeViewModel extends Model {
   static final HomeViewModel HomeVM_instance = HomeViewModel._internal();
 
   List<Course> courseList = [];
+  List<Course> myCourse = [];
 
   factory HomeViewModel() {
     return HomeVM_instance;

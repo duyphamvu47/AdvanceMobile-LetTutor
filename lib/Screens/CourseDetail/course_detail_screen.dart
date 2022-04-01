@@ -3,6 +3,7 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:lettutor/components/rounded_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../model/Course.dart';
 import 'components/course_feature.dart';
 import 'components/header.dart';
@@ -121,7 +122,7 @@ class CourseDetail extends StatelessWidget {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              RoundedButton(text: "Enroll", press: (){}),
+                              RoundedButton(text: "Enroll", press: () => enrollCourse()),
                             ],
                           ),
                         )
@@ -139,7 +140,17 @@ class CourseDetail extends StatelessWidget {
 
 
   List<Topics> getTopics(){
-    return course.topics?.where((element) => (element.name?.length ?? 0) <= 20).toList() ?? [];
+    return course.topics?.where((element) => (element.name?.length ?? 0) <= 15).toList() ?? [];
+  }
+
+  void enrollCourse() async{
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    List<String> myCourse = [];
+    myCourse = sharedPreferences.getStringList("MyCourse") ?? [];
+    if (!myCourse.contains(course.id ?? "")){
+      myCourse.add(course.id ?? "");
+      sharedPreferences.setStringList("MyCourse", myCourse);
+    }
   }
 }
 

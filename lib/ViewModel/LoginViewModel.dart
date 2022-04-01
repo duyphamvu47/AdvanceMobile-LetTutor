@@ -32,8 +32,9 @@ class LoginViewModel extends Model {
     sharedPreferences = await SharedPreferences.getInstance();
   }
 
-  bool authenticate(){
+  Future<bool> authenticate() async{
     if (ID.isEmpty || password.isEmpty) return false;
+
     return authentication.authenticate("user_" + ID, password);
   }
 

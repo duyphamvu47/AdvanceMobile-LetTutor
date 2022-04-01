@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lettutor/model/Course.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:lettutor/Service/Api.dart';
 
 import '../data/courses_json.dart';
 
@@ -24,11 +26,18 @@ class MyCourseViewModel extends Model {
 
 
   Future<void> readJson() async {
-    final String response = await rootBundle.loadString('assets/data/course.json');
-    Map<String, dynamic> data = await json.decode(response);
-    for (var i = 0; i < data.length; i++) {
-      courseList.add(Course.fromJson(data[i]));
-    }
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    List<String> myCourse = [];
+    myCourse = sharedPreferences.getStringList("MyCourse") ?? [];
+
+    courseList = API.courseList.where((element) => myCourse.contains(element.id ?? "")).toList();
+    notifyListeners();
+  }
+
+
+  List<Course> getCourseList(){
+    readJson();
+    return courseList;
   }
 
 

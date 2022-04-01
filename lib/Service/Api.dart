@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:lettutor/Service/Authentication.dart';
 import 'package:lettutor/model/Course.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,8 +11,9 @@ import 'package:http/http.dart' as http;
 
 class API {
   static final API instance = API._internal();
-  static String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjYjllN2RlYi0zMzgyLTQ4ZGItYjA3Yy05MGFjZjUyZjU0MWMiLCJpYXQiOjE2NDg3MTM5MDksImV4cCI6MTY0ODgwMDMwOSwidHlwZSI6ImFjY2VzcyJ9.O6BMoMTsw895uk0OhgIlMC9Y-cREg3CeR1CpCqRZJNw";
+  static String token = "";
 
+  static List<Course> courseList = [];
   String ID = "";
   String password = "";
 
@@ -47,6 +49,7 @@ class API {
   }
 
   Future<List<Course>> fetchCourse() {
+    token = Authentication.instance.token;
     return http.get(Uri.parse("https://sandbox.api.lettutor.com/course"),
         headers: {
           'Content-Type': 'application/json',
@@ -66,7 +69,8 @@ class API {
       const JsonDecoder _decoder = JsonDecoder();
       final tutorContainer = _decoder.convert(jsonBody);
       final List course = tutorContainer['data']['rows'];
-      return course.map((contactRaw) => Course.fromJson(contactRaw)).toList();
+      courseList = course.map((contactRaw) => Course.fromJson(contactRaw)).toList();
+      return courseList;
     });
   }
 }
