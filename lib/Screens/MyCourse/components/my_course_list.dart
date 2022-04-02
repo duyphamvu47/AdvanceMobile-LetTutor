@@ -26,13 +26,13 @@ class MyCourseList extends StatelessWidget {
               image: data.imageUrl ?? "",
               title: data.name ?? "",
               onPress: () {
-                // Navigator.of(context).push(
-                //   MaterialPageRoute(
-                //       builder: (context){
-                //         return CourseDetail();
-                //       }
-                //   ),
-                // );
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (context){
+                        return CourseDetail(course: data);
+                      }
+                  ),
+                );
               },
             ),
           ),

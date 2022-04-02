@@ -83,7 +83,6 @@ class Body extends StatelessWidget{
                     SocialIcon(
                       iconPath: "assets/icons/facebook.svg",
                       press: (){
-                        print("Hiii");
                       },
                     ),
                     SocialIcon(

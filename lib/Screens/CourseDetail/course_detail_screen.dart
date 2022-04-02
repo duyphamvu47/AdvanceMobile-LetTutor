@@ -2,20 +2,30 @@ import 'dart:core';
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:lettutor/Screens/WaitingScreen/waiting_screen.dart';
+import 'package:lettutor/components/bottom_navigation.dart';
 import 'package:lettutor/components/rounded_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../Service/Api.dart';
 import '../../model/Course.dart';
 import 'components/course_feature.dart';
 import 'components/header.dart';
 import 'components/section_title.dart';
 import 'components/teacher_row.dart';
 
-class CourseDetail extends StatelessWidget {
+class CourseDetail extends StatefulWidget {
   final Course course;
+  @override
+  _CourseDetail createState() => _CourseDetail();
 
   const CourseDetail({Key? key, required this.course}) : super(key: key);
+}
+
+class _CourseDetail extends State<CourseDetail>{
+  bool isMyCourse = false;
   @override
   Widget build(BuildContext context) {
+    isMyCourse = checkIsMyCourse();
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
@@ -62,9 +72,9 @@ class CourseDetail extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CourseDetailHeader(
-                          courseName: course.name ?? "Course name",
-                          courseIcon: course.imageUrl != null ? Image.network(course.imageUrl ?? "") : Image.asset("assets/images/user_profile.jpg"),
-                          description: course.description ?? "",
+                          courseName: widget.course.name ?? "Course name",
+                          courseIcon: widget.course.imageUrl != null ? Image.network(widget.course.imageUrl ?? "") : Image.asset("assets/images/user_profile.jpg"),
+                          description: widget.course.description ?? "",
                         ),
                         SizedBox(
                           height: 24,
@@ -89,18 +99,18 @@ class CourseDetail extends StatelessWidget {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children:
-                              List.generate(getTopics().length, (index) {
-                                var topic = course.topics![index];
-                                return Flexible(
-                                  child: CourseFeatureRow(
-                                    title: topic.name ?? "",
-                                    content: "With document",
-                                    color: Colors.deepPurpleAccent,
-                                    icon: Icons.videocam_outlined,
-                                  ),
-                                );
-                              }
-                              ),
+                            List.generate(getTopics().length, (index) {
+                              var topic = widget.course.topics![index];
+                              return Flexible(
+                                child: CourseFeatureRow(
+                                  title: topic.name ?? "",
+                                  content: "With document",
+                                  color: Colors.deepPurpleAccent,
+                                  icon: Icons.videocam_outlined,
+                                ),
+                              );
+                            }
+                            ),
                           ),
                         ),
                         SectionTitle(
@@ -122,7 +132,21 @@ class CourseDetail extends StatelessWidget {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              RoundedButton(text: "Enroll", press: () => enrollCourse()),
+                              RoundedButton(text: isMyCourse ? "Go to class" : "Enroll", press: () {
+                                if (isMyCourse){
+                                  // Go to waiting screen
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                        builder: (context){
+                                          return WaitingScreen();
+                                        }
+                                    ),
+                                  );
+                                } else{
+                                  enrollCourse().then((value) {
+                                  });
+                                }
+                              }),
                             ],
                           ),
                         )
@@ -140,17 +164,27 @@ class CourseDetail extends StatelessWidget {
 
 
   List<Topics> getTopics(){
-    return course.topics?.where((element) => (element.name?.length ?? 0) <= 15).toList() ?? [];
+    return widget.course.topics?.where((element) => (element.name?.length ?? 0) <= 15).toList() ?? [];
   }
 
-  void enrollCourse() async{
+  Future<void> enrollCourse() async{
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     List<String> myCourse = [];
     myCourse = sharedPreferences.getStringList("MyCourse") ?? [];
-    if (!myCourse.contains(course.id ?? "")){
-      myCourse.add(course.id ?? "");
+    if (!myCourse.contains(widget.course.id ?? "")){
+      myCourse.add(widget.course.id ?? "");
       sharedPreferences.setStringList("MyCourse", myCourse);
+      // await API.instance.fetchMyCourse();
+      // await API.instance.fetchRelatedCourse();
+      Navigator.pop(context,
+          MaterialPageRoute(builder: (context) => RootApp()));
     }
+  }
+
+  bool checkIsMyCourse(){
+    List<String?> myCourse = API.myCourse.map((e) => e.id).toList();
+    isMyCourse = myCourse.contains(widget.course.id);
+    return isMyCourse;
   }
 }
 

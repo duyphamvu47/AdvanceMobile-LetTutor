@@ -45,22 +45,7 @@ class Body extends StatelessWidget {
                   RoundedButton(
                       text: "Reset password",
                       press: (){
-                        var isExist = model.isUserExistence();
-                        if (isExist){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return OTPScreen(
-                                  email: email,
-                                );
-                              },
-                            ),
-                          );
-                        }
-                        else{
-                          Utils.showSnackBar(context, "Invalid email");
-                        }
+                          butttonPress(model, context, email);
                       }
                   ),
                   SizedBox(height: size.height * 0.03,),
@@ -70,5 +55,24 @@ class Body extends StatelessWidget {
           );
         }
     );
+  }
+
+  void butttonPress(ForgotPasswordViewModel model, BuildContext context, String email) async{
+    var isExist = await model.isUserExistence();
+    if (isExist){
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return OTPScreen(
+              email: email,
+            );
+          },
+        ),
+      );
+    }
+    else{
+      Utils.showSnackBar(context, "Invalid email");
+    }
   }
 }

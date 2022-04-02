@@ -12,7 +12,7 @@ import '../data/courses_json.dart';
 class HomeViewModel extends Model {
   static final HomeViewModel HomeVM_instance = HomeViewModel._internal();
 
-  List<Course> courseList = [];
+  List<Course> relatedCourse = [];
   List<Course> myCourse = [];
 
   factory HomeViewModel() {
@@ -26,10 +26,23 @@ class HomeViewModel extends Model {
 
 
   void fetchData() async {
-    courseList = await API.instance.fetchCourse();
+    relatedCourse = await API.instance.fetchRelatedCourse();
     notifyListeners();
   }
 
+  void fetchMyCourse() async {
+    myCourse = await API.instance.fetchMyCourse();
+    notifyListeners();
+  }
 
+  List<Course> getMyCourse() {
+   fetchMyCourse();
+    return myCourse;
+  }
+
+  List<Course> getRelatedCourse(){
+    fetchData();
+    return relatedCourse;
+  }
 
 }

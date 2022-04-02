@@ -26,11 +26,7 @@ class MyCourseViewModel extends Model {
 
 
   Future<void> readJson() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    List<String> myCourse = [];
-    myCourse = sharedPreferences.getStringList("MyCourse") ?? [];
-
-    courseList = API.courseList.where((element) => myCourse.contains(element.id ?? "")).toList();
+    courseList = await API.instance.fetchMyCourse();
     notifyListeners();
   }
 

@@ -30,9 +30,9 @@ class ResetPasswordViewModel extends Model {
     sharedPreferences = await SharedPreferences.getInstance();
   }
 
-  bool changePassword(){
+  Future<bool> changePassword() async{
     String ID = sharedPreferences.getString("forgot_password");
-    return authentication.changePassword("user_" + ID, password);
+    return await authentication.changePassword("user_" + ID, password);
   }
 
 

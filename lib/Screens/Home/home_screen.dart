@@ -122,8 +122,8 @@ class _HomePageState extends State<HomePage> {
                     // right: appPadding - 10.0,
                   ),
                   child: Wrap(
-                    children: List.generate(model.courseList.length, (index) {
-                      var data = model.courseList[index];
+                    children: List.generate(model.getMyCourse().length, (index) {
+                      var data = model.myCourse[index];
                       return Padding(
                         padding: const EdgeInsets.only(right: 15.0, bottom: 20.0),
                         child: GestureDetector(
@@ -163,13 +163,19 @@ class _HomePageState extends State<HomePage> {
                     // right: appPadding - 10.0,
                   ),
                   child: Wrap(
-                    children: List.generate(model.courseList.length, (index) {
-                      var data = model.courseList[index];
+                    children: List.generate(model.getRelatedCourse().length, (index) {
+                      var data = model.relatedCourse[index];
                       return Padding(
                         padding: const EdgeInsets.only(right: 15.0, bottom: 20.0),
                         child: GestureDetector(
                           onTap: () {
-
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context){
+                                    return CourseDetail(course: data,);
+                                  }
+                              ),
+                            );
                           },
                           child: CustomCourseCardExpand(
                             thumbNail: data.imageUrl ?? "",

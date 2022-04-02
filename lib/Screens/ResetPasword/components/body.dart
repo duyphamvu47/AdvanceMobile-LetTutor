@@ -52,17 +52,7 @@ class Body extends StatelessWidget {
               RoundedButton(
                   text: "DONE",
                   press: (){
-                    if (model.changePassword()){
-                      Navigator.push(context, MaterialPageRoute(
-                        builder: (context) {
-                          return LoginScreen();
-                        },
-                      ),
-                      );
-                    }
-                    else{
-                      Utils.showSnackBar(context, "Your passwords are not match");
-                    }
+                    buttonPress(model, context);
                   }
               ),
             ],
@@ -71,6 +61,21 @@ class Body extends StatelessWidget {
       );
       }
     );
+  }
+
+  void buttonPress(ResetPasswordViewModel model, BuildContext context) async{
+    bool res = await model.changePassword();
+    if (res){
+      Navigator.push(context, MaterialPageRoute(
+        builder: (context) {
+          return LoginScreen();
+        },
+      ),
+      );
+    }
+    else{
+      Utils.showSnackBar(context, "Your passwords are not match");
+    }
   }
 }
 

@@ -59,8 +59,9 @@ class Authentication {
   }
 
   Future<bool> authenticate(String id, String pass) async {
-    String password = "";
-    password = sharedPreferences.getString(id);
+    String? password = "";
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    password = preferences.getString(id);
     if (password == pass) {
       sharedPreferences.setString("Login", id);
       API.token = await Authentication.instance.getToken();
@@ -69,18 +70,21 @@ class Authentication {
     return false;
   }
 
-  bool isUserExistence(String id){
-    String password = "";
-    password = sharedPreferences.getString(id);
+  Future<bool> isUserExistence(String id) async{
+    String? password = "";
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    password = preferences.getString(id);
     if (password != null){
       return true;
     }
     return false;
   }
 
-  bool changePassword(String ID, String password){
-    if (isUserExistence(ID)){
-      sharedPreferences.setString(ID, password);
+  Future<bool> changePassword(String ID, String password) async{
+    var isExist = await isUserExistence(ID);
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    if (isExist){
+      preferences.setString(ID, password);
       return true;
     }
     else{

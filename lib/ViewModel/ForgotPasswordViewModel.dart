@@ -29,9 +29,9 @@ class ForgotPasswordViewModel extends Model {
     sharedPreferences = await SharedPreferences.getInstance();
   }
 
-  bool isUserExistence(){
+  Future<bool> isUserExistence() async{
     if (ID.isEmpty ) return false;
-    bool isExist = authentication.isUserExistence("user_" + ID);
+    bool isExist = await authentication.isUserExistence("user_" + ID);
     if (isExist){
       sharedPreferences.setString("forgot_password", ID);
     }

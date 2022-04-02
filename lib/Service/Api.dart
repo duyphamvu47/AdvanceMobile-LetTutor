@@ -14,6 +14,7 @@ class API {
   static String token = "";
 
   static List<Course> courseList = [];
+  static List<Course> myCourse = [];
   String ID = "";
   String password = "";
 
@@ -72,5 +73,24 @@ class API {
       courseList = course.map((contactRaw) => Course.fromJson(contactRaw)).toList();
       return courseList;
     });
+  }
+
+
+  Future<List<Course>> fetchMyCourse() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    List<String> myCourseStr = [];
+    myCourseStr = sharedPreferences.getStringList("MyCourse") ?? [];
+
+    myCourse = courseList.where((element) => myCourseStr.contains(element.id ?? "")).toList();
+    return myCourse;
+  }
+
+  Future<List<Course>> fetchRelatedCourse() async {
+    await fetchCourse();
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    List<String> myCourseStr = [];
+    myCourseStr = sharedPreferences.getStringList("MyCourse") ?? [];
+
+    return courseList.where((element) => !myCourseStr.contains(element.id ?? "")).toList();
   }
 }
