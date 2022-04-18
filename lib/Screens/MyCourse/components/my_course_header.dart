@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lettutor/ViewModel/MyCoursesViewModel.dart';
 import 'package:lettutor/constant.dart';
 
 import '../../../data/courses_json.dart';
@@ -23,7 +24,7 @@ class MyCourseHeader extends StatelessWidget {
           color: kPrimaryColor,
         ),
         Text(
-          MyCoursesJson.length.toString() + ' Courses',
+          MyCourseViewModel.instance.courseList.length.toString() + ' Courses',
           style: TextStyle(
               color: kPrimaryColor,
               fontSize: 15.0,

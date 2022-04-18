@@ -18,12 +18,12 @@ class _RootAppState extends State<RootApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: getBody(),
+      body: getBody(context),
       bottomNavigationBar: getFooter(),
     );
   }
 
-  Widget getBody() {
+  Widget getBody(BuildContext context) {
     List<Widget> pages = [
       HomePage(),
       MyCoursesPage(),

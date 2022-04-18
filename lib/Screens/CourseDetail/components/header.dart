@@ -54,12 +54,14 @@ class CourseDetailHeader extends StatelessWidget {
                     CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text(
-                        description,
-                        style: TextStyle(
-                            color: Colors.grey[800],
-                            fontWeight: FontWeight.w500,
-                            fontSize: 20
+                      Flexible(
+                        child: Text(
+                          description,
+                          style: TextStyle(
+                              color: Colors.grey[800],
+                              fontWeight: FontWeight.w500,
+                              fontSize: 20
+                          ),
                         ),
                       )
                     ],

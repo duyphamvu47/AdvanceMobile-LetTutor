@@ -6,13 +6,11 @@ class CustomMyCoursesCard extends StatefulWidget {
     Key? key,
     required this.image,
     required this.title,
-    required this.instructor,
     required this.onPress,
   }) : super(key: key);
 
   final String image;
   final String title;
-  final String instructor;
   final VoidCallback onPress;
 
   @override
@@ -67,18 +65,6 @@ class _CustomMyCoursesCardState extends State<CustomMyCoursesCard> {
                             fontSize: 15.0,
                             fontWeight: FontWeight.w700,
                           ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Intructor: ' + widget.instructor,
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: grey,
-                              ),
-                            ),
-                          ],
                         ),
                       ],
                     ),
