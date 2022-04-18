@@ -80,6 +80,32 @@ class Authentication {
     return false;
   }
 
+
+  Future<bool> signUp(String email, String password){
+    return http.post(Uri.parse("https://sandbox.api.lettutor.com/auth/register"),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'email': email,
+          'password': password
+        })
+    ).then((http.Response response) {
+      final String jsonBody = response.body;
+      final int statusCode = response.statusCode;
+
+      if (statusCode != 201) {
+        if (kDebugMode) {
+          print(response.reasonPhrase);
+        }
+        // throw Exception("StatusCode:$statusCode, Error:${response.reasonPhrase}");
+        return false;
+      }
+
+      return true;
+    });
+  }
+
   Future<bool> changePassword(String ID, String password) async{
     var isExist = await isUserExistence(ID);
     SharedPreferences preferences = await SharedPreferences.getInstance();
