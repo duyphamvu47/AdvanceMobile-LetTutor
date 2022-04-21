@@ -50,7 +50,10 @@ class API {
   }
 
   Future<List<Course>> fetchCourse() {
-    token = Authentication.instance.token;
+    String? Token = Authentication.instance.accessToken?.token;
+    if (Token != null){
+      token = Token;
+    }
     return http.get(Uri.parse("https://sandbox.api.lettutor.com/course"),
         headers: {
           'Content-Type': 'application/json',

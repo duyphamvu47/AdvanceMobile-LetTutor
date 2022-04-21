@@ -6,7 +6,12 @@ import 'package:scoped_model/scoped_model.dart';
 class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Body(),);
+    return ScopedModel(
+      model: WelcomeViewModel.instance,
+      child: Scaffold(
+        body: Body(),
+      ),
+    );
   }
 
 }

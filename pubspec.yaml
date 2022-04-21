@@ -39,6 +39,7 @@ dependencies:
   shared_preferences: ^2.0.13
   scoped_model: ^2.0.0-nullsafety.0
   http: ^0.13.4
+  intl: ^0.17.0
 
 
 dev_dependencies:

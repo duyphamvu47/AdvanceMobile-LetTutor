@@ -84,20 +84,22 @@ class Body extends StatelessWidget {
   }
 
   void loginBtnPress(BuildContext context, LoginViewModel model) async{
-    var result = await model.authenticate();
-    if (result){
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) {
-            return RootApp();
-          },
-        ),
-      );
-    }
-    else{
-      loginFail(context);
-    }
+    model.authenticate().then((result) {
+      if (result){
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return RootApp();
+            },
+          ),
+        );
+      }
+      else{
+        loginFail(context);
+      }
+    });
+
   }
 
 }
