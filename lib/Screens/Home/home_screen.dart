@@ -95,6 +95,8 @@ class _HomePageState extends State<HomePage> {
                         CustomSearchField(
                           hintField: 'Try "Something"',
                           backgroundColor: background,
+                          onChanged: (value){},
+                          onTap: (){},
                         ),
                         SizedBox(height: spacer - 30.0),
 
