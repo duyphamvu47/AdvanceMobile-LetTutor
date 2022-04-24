@@ -1,24 +1,26 @@
-import 'dart:convert';
-
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:lettutor/Service/Api.dart';
 import 'package:lettutor/model/Course.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import '../data/courses_json.dart';
+import '../model/Tutor.dart';
 
 
 class ExploredViewModel extends Model {
   static final ExploredViewModel instance = ExploredViewModel._internal();
 
-  List<Course> searchResult = [];
+  List<Tutor> searchResult = [];
 
   factory ExploredViewModel() {
     return instance;
   }
 
   ExploredViewModel._internal() {
+    fetchTutor();
+  }
+
+  void fetchTutor() async {
+    await API.instance.fetchTutor();
   }
 
 
@@ -28,29 +30,28 @@ class ExploredViewModel extends Model {
       notifyListeners();
       return;
     }
-    List<Course> courseList = API.courseList;
-    List<Course> result = courseList.where((element) {
+    List<Tutor> tutorList = API.tutorList;
+    List<Tutor> result = tutorList.where((element) {
       var name = element.name;
-      var description = element.description;
-      var topics = element.topics?.toList();
+      var specialties = element.specialties;
+      var profession = element.profession;
+      var education = element.education;
+      var des = element.bio;
 
       if (name != null){
-        if (name.toLowerCase().contains(keyword)) return true;
+        if (name.contains(keyword)) return true;
       }
-
-      if (description != null){
-        if (description.toLowerCase().contains(keyword)) return true;
+      if (specialties != null){
+        if (specialties.contains(keyword)) return true;
       }
-
-      if (topics != null) {
-        List<bool> temp = topics.map((e) {
-          var name_ = e.name;
-          var des = e.description;
-          if (name_ != null) return name_.toLowerCase().contains(keyword);
-          if (des != null) return des.toLowerCase().contains(keyword);
-          return false;
-        }).toList();
-        return temp.contains(true);
+      if (profession != null){
+        if (profession.contains(keyword)) return true;
+      }
+      if (education != null){
+        if (education.contains(keyword)) return true;
+      }
+      if (des != null){
+        if (des.contains(keyword)) return true;
       }
       return false;
     }).toList();

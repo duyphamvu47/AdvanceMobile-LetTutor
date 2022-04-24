@@ -15,6 +15,7 @@ class API {
 
   static List<Course> courseList = [];
   static List<Course> myCourse = [];
+  static List<Tutor> tutorList = [];
   String ID = "";
   String password = "";
 
@@ -26,6 +27,10 @@ class API {
   }
 
   Future<List<Tutor>> fetchTutor() {
+    String? Token = Authentication.instance.accessToken?.token;
+    if (Token != null){
+      token = Token;
+    }
     return http.post(Uri.parse("https://sandbox.api.lettutor.com/tutor/search"),
         headers: {
           'Content-Type': 'application/json',
@@ -45,7 +50,8 @@ class API {
       const JsonDecoder _decoder = JsonDecoder();
       final tutorContainer = _decoder.convert(jsonBody);
       final List tutors = tutorContainer['rows'];
-      return tutors.map((contactRaw) => Tutor.fromJson(contactRaw)).toList();
+      tutorList = tutors.map((contactRaw) => Tutor.fromJson(contactRaw)).toList();
+      return tutorList;
     });
   }
 
@@ -96,4 +102,6 @@ class API {
 
     return courseList.where((element) => !myCourseStr.contains(element.id ?? "")).toList();
   }
+
+
 }

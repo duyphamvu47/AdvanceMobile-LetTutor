@@ -7,10 +7,12 @@ class CustomMyCoursesCard extends StatefulWidget {
     required this.image,
     required this.title,
     required this.onPress,
+    this.specs = "",
   }) : super(key: key);
 
   final String image;
   final String title;
+  final String specs;
   final VoidCallback onPress;
 
   @override
@@ -62,7 +64,17 @@ class _CustomMyCoursesCardState extends State<CustomMyCoursesCard> {
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             color: kPrimaryColor,
-                            fontSize: 15.0,
+                            fontSize: 17.0,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        Text(
+                          widget.specs,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: kPrimaryColor,
+                            fontSize: 13.0,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
