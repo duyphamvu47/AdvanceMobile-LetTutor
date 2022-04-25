@@ -14,6 +14,7 @@ import '../CourseDetail/components/course_feature.dart';
 import '../CourseDetail/components/header.dart';
 import '../CourseDetail/components/section_title.dart';
 import '../CourseDetail/components/teacher_row.dart';
+import '../TutorSchedule/schedule_screen.dart';
 
 class TutorDetail extends StatefulWidget {
   final Tutor tutor;
@@ -129,20 +130,15 @@ class _TutorDetail extends State<TutorDetail>{
                             children: <Widget>[
                               RoundedButton(text: isMyCourse ? "Go to class" : "Enroll",
                                   press: () {
-                                    // if (isMyCourse){
-                                    //   // Go to waiting screen
-                                    //   Navigator.of(context).push(
-                                    //     MaterialPageRoute(
-                                    //         builder: (context){
-                                    //           return WaitingScreen();
-                                    //         }
-                                    //     ),
-                                    //   );
-                                    // } else{
-                                    //   enrollCourse().then((value) {
-                                    //   });
-                                    // }
-                                }
+                                    // Go to waiting screen
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                          builder: (context){
+                                            return SchedulePage(title: 'Schedule', ID: widget.tutor.userId ?? "",);
+                                          }
+                                      ),
+                                    );
+                                  }
                               ),
                             ],
                           ),
@@ -158,6 +154,11 @@ class _TutorDetail extends State<TutorDetail>{
       ),
     );
   }
+
+}
+
+
+void btnClicked(BuildContext context){
 
 }
 

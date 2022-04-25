@@ -6,6 +6,7 @@ import 'package:lettutor/Service/Authentication.dart';
 import 'package:lettutor/model/Course.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../model/Schedule.dart';
 import '../model/Tutor.dart';
 import 'package:http/http.dart' as http;
 
@@ -101,6 +102,39 @@ class API {
     myCourseStr = sharedPreferences.getStringList("MyCourse") ?? [];
 
     return courseList.where((element) => !myCourseStr.contains(element.id ?? "")).toList();
+  }
+
+  Future<List<Shift>> fetchTutorSchedule(String ID){
+    String? Token = Authentication.instance.accessToken?.token;
+    if (Token != null && token != Token){
+      token = Token;
+    }
+    return http.post(Uri.parse("https://sandbox.api.lettutor.com/schedule"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token'
+        },
+        body: jsonEncode({
+          'tutorId': ID
+        })
+    ).then((http.Response response) {
+      final String jsonBody = response.body;
+      final int statusCode = response.statusCode;
+
+      if (statusCode != 200) {
+        if (kDebugMode) {
+          print(response.reasonPhrase);
+        }
+        throw Exception(
+            "StatusCode:$statusCode, Error:${response.reasonPhrase}");
+      }
+
+      const JsonDecoder _decoder = JsonDecoder();
+      final body = _decoder.convert(jsonBody);
+      final List schedule = body['data'];
+      final List<Shift> shifts = schedule.map((e) => Shift.fromJson(e)).toList();
+      return shifts;
+    });
   }
 
 

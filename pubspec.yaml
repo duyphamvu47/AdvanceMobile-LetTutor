@@ -40,6 +40,7 @@ dependencies:
   scoped_model: ^2.0.0-nullsafety.0
   http: ^0.13.4
   intl: ^0.17.0
+  syncfusion_flutter_calendar: ^20.1.50
 
 
 dev_dependencies:
