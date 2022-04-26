@@ -31,7 +31,7 @@ class _SchedulePageState extends State<SchedulePage> {
   @override
   void initState() {
     ScheduleViewModel.instance.ID = widget.ID;
-    // ScheduleViewModel.instance.fetchData();
+    ScheduleViewModel.instance.fetchData();
     addAppointments();
     _events = MeetingDataSource(_shiftCollection);
     super.initState();
@@ -57,7 +57,11 @@ class _SchedulePageState extends State<SchedulePage> {
               firstDayOfWeek: 1,
               timeSlotViewSettings:
               TimeSlotViewSettings(startHour: 12, endHour: 22),
-              dataSource: MeetingDataSource(model.appointments));
+              dataSource: MeetingDataSource(model.appointments),
+            onTap: (CalendarTapDetails details) {
+                model.bookClass(details.appointments?.first);
+            },
+          );
         }
     );
   }

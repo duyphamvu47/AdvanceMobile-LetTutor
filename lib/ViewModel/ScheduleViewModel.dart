@@ -23,7 +23,6 @@ class ScheduleViewModel extends Model {
   }
 
   ScheduleViewModel._internal() {
-    fetchData();
   }
 
   void fetchData() async {
@@ -33,5 +32,16 @@ class ScheduleViewModel extends Model {
     notifyListeners();
   }
 
+  void bookClass(Appointment appointment) async{
+    String ID = appointment.id as String;
+    print(ID);
+    if (ID.isNotEmpty){
+      API.instance.bookClass(ID).then((value) {
+        if (value){
+          fetchData();
+        }
+      });
+    }
+  }
 
 }

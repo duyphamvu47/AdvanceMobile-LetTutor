@@ -70,7 +70,8 @@ class Shift {
         subject: subject,
         color: kPrimaryColor,
         startTimeZone: '',
-        endTimeZone: ''
+        endTimeZone: '',
+        id: scheduleDetails?.first.id
     );
 
   }
@@ -109,12 +110,12 @@ class ScheduleDetails {
     endPeriod = json['endPeriod'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
-    if (json['bookingInfo'] != null) {
-      bookingInfo = <BookingInfo>[];
-      json['bookingInfo'].forEach((v) {
-        bookingInfo!.add(new BookingInfo.fromJson(v));
-      });
-    }
+    // if (json['bookingInfo'] != null) {
+    //   bookingInfo = <BookingInfo>[];
+    //   json['bookingInfo'].forEach((v) {
+    //     bookingInfo!.add(new BookingInfo.fromJson(v));
+    //   });
+    // }
     isBooked = json['isBooked'];
   }
 
@@ -128,9 +129,9 @@ class ScheduleDetails {
     data['endPeriod'] = this.endPeriod;
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
-    if (this.bookingInfo != null) {
-      data['bookingInfo'] = this.bookingInfo!.map((v) => v.toJson()).toList();
-    }
+    // if (this.bookingInfo != null) {
+    //   data['bookingInfo'] = this.bookingInfo!.map((v) => v.toJson()).toList();
+    // }
     data['isBooked'] = this.isBooked;
     return data;
   }

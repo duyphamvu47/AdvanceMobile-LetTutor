@@ -137,5 +137,34 @@ class API {
     });
   }
 
+  Future<bool> bookClass(String ID){
+    String? Token = Authentication.instance.accessToken?.token;
+    if (Token != null && token != Token){
+      token = Token;
+    }
+    return http.post(Uri.parse("https://sandbox.api.lettutor.com/booking"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token'
+        },
+        body: jsonEncode({
+          'scheduleDetailIds': ID
+        })
+    ).then((http.Response response) {
+      final String jsonBody = response.body;
+      final int statusCode = response.statusCode;
+
+      if (statusCode != 200) {
+        if (kDebugMode) {
+          print(response.reasonPhrase);
+        }
+        throw Exception(
+            "StatusCode:$statusCode, Error:${response.reasonPhrase}");
+      }
+
+      return true;
+    });
+  }
+
 
 }
