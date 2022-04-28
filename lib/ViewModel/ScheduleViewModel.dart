@@ -28,7 +28,7 @@ class ScheduleViewModel extends Model {
   void fetchData() async {
     shifts = await API.instance.fetchTutorSchedule(ID);
     appointments = shifts.map((e) => e.toAppointment()).toList();
-    print("Hi" + appointments.length.toString());
+    print("Fetch " + appointments.length.toString() + " shitfts");
     notifyListeners();
   }
 

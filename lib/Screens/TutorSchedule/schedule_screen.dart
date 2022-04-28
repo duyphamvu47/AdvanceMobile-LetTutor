@@ -7,15 +7,6 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 class SchedulePage extends StatefulWidget {
   SchedulePage({Key? key, required this.title, required this.ID}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
   final String ID;
 
@@ -56,7 +47,7 @@ class _SchedulePageState extends State<SchedulePage> {
               view: CalendarView.timelineWorkWeek,
               firstDayOfWeek: 1,
               timeSlotViewSettings:
-              TimeSlotViewSettings(startHour: 12, endHour: 22),
+              TimeSlotViewSettings(startHour: 12, endHour: 24, timeInterval: Duration(minutes: 15)),
               dataSource: MeetingDataSource(model.appointments),
             onTap: (CalendarTapDetails details) {
                 model.bookClass(details.appointments?.first);

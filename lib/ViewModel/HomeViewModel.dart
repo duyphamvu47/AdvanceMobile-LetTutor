@@ -3,10 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lettutor/Service/Api.dart';
+import 'package:lettutor/Service/Authentication.dart';
 import 'package:lettutor/model/Course.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import '../data/courses_json.dart';
+import '../model/User.dart';
 
 
 class HomeViewModel extends Model {
@@ -14,6 +16,7 @@ class HomeViewModel extends Model {
 
   List<Course> relatedCourse = [];
   List<Course> myCourse = [];
+  User? user;
 
   factory HomeViewModel() {
     return HomeVM_instance;
@@ -26,6 +29,7 @@ class HomeViewModel extends Model {
 
 
   void fetchData() async {
+    user = Authentication.instance.userData;
     relatedCourse = await API.instance.fetchRelatedCourse();
     notifyListeners();
   }

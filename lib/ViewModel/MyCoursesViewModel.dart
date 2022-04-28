@@ -6,36 +6,31 @@ import 'package:lettutor/model/Course.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lettutor/Service/Api.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../data/courses_json.dart';
+import '../model/Schedule.dart';
 
 
-class MyCourseViewModel extends Model {
-  static final MyCourseViewModel instance = MyCourseViewModel._internal();
+class MyScheduleViewModel extends Model {
+  static final MyScheduleViewModel instance = MyScheduleViewModel._internal();
 
-  List<Course> courseList = [];
+  List<Shift> shifts = [];
+  List<Appointment> appointments = [];
 
-  factory MyCourseViewModel() {
+  factory MyScheduleViewModel() {
     return instance;
   }
 
-  MyCourseViewModel._internal() {
-    readJson();
+  MyScheduleViewModel._internal() {
   }
 
-
-
-  Future<void> readJson() async {
-    courseList = await API.instance.fetchMyCourse();
+  void fetchData() async {
+    shifts = await API.instance.fetchMySchedule();
+    appointments = shifts.map((e) => e.toAppointment()).toList();
+    print("Fetch " + appointments.length.toString() + " shitfts");
     notifyListeners();
   }
-
-
-  List<Course> getCourseList(){
-    readJson();
-    return courseList;
-  }
-
 
 
 }

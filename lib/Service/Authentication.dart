@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:lettutor/model/User.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 
@@ -30,6 +31,7 @@ class Authentication {
   String token = "";
   Token? accessToken;
   Token? refreshToken;
+  User? userData;
 
 
   String ID = "";
@@ -40,7 +42,7 @@ class Authentication {
   }
 
   Authentication._internal() {
-    setUp();
+    // setUp();
   }
 
   Future<String> getToken() {
@@ -100,6 +102,11 @@ class Authentication {
       final refresh = body['tokens']['refresh'];
       final Token accessToken = Token.fromJson(access);
       final Token refreshToken = Token.fromJson(refresh);
+      final object = body['user'];
+      userData = User.fromJson(object);
+      this.accessToken = accessToken;
+      this.refreshToken = refreshToken;
+      print("User ID: " + (userData?.id ?? " "));
       saveInfo(accessToken, refreshToken);
       return true;
     });
@@ -109,6 +116,7 @@ class Authentication {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setString("access", json.encode(access.toJson()));
     sharedPreferences.setString("refresh", json.encode(refresh.toJson()));
+    sharedPreferences.setString("user_data", jsonEncode(userData?.toJson()));
     accessToken = accessToken;
     refreshToken = refreshToken;
   }
@@ -117,25 +125,21 @@ class Authentication {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String? accessStr = sharedPreferences.getString("access");
     String? refreshStr = sharedPreferences.getString("refresh");
+    String? user_data = sharedPreferences.getString("user_data");
     if (accessStr != null){
       accessToken = Token.fromJson(json.decode(accessStr));
     }
     if (refreshStr != null){
       refreshToken = Token.fromJson(json.decode(refreshStr));
     }
+    if (user_data != null){
+      userData = User.fromJson(jsonDecode(user_data));
+    }
     print(accessToken);
     print(refreshToken);
+    print(userData?.id ?? "");
   }
 
-  // Future<bool> authenticate(String id, String pass) async {
-  //   String? password = "";
-  //   SharedPreferences preferences = await SharedPreferences.getInstance();
-  //   password = preferences.getString(id);
-  //     API.token = await Authentication.instance.getToken();
-  //     bool temp = await Authentication.instance.logIn("phhai@ymail.com", "123456");
-  //
-  //   return false;
-  // }
 
   Future<bool> checkLoginStatus() async{
     if (accessToken == null || refreshToken == null) {

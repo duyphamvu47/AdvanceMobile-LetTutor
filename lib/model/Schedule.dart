@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lettutor/constant.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -59,14 +60,21 @@ class Shift {
   }
   
   Appointment toAppointment(){
-    DateTime startTime = DateFormat.Hm().parse(this.startTime ?? "");
-    DateTime endTime = DateFormat.Hm().parse(this.endTime ?? "");
+    final now = DateTime.now();
+    TimeOfDay beginTime = toTime(this.startTime);
+    TimeOfDay finishTime = toTime(this.endTime);
+    DateTime startTime = DateTime(now.year, now.month, now.day, beginTime.hour, beginTime.minute);
+    DateTime endTime = DateTime(now.year, now.month, now.day, finishTime.hour, finishTime.minute);
     DateTime startDate = DateTime.fromMillisecondsSinceEpoch(startTimestamp ?? 0);
     DateTime endDate = DateTime.fromMillisecondsSinceEpoch(endTimestamp ?? 0);
-    String subject = (this.isBooked ?? false) ? "Full" : "Empty";
+    String subject = (isBooked ?? false) ? "Full" : "Empty";
+    Duration diff = startDate.difference(endDate);
+    print("Begin: " + DateTime(startDate.year, startDate.month, startDate.day, startTime.hour, startTime.minute).toString());
+    print("End: " + DateTime(endDate.year, endDate.month, endDate.day, endTime.hour, endTime.minute).toString());
+    print("-----------");
     return  Appointment(
-        startTime: DateTime(startDate.year, startDate.month, startDate.day, startTime.hour, startTime.minute),
-        endTime: DateTime(endDate.year, endDate.month, endDate.day, endTime.hour, endTime.minute),
+        startTime: startDate,
+        endTime: startDate.add(Duration(minutes: diff.inMinutes)),
         subject: subject,
         color: kPrimaryColor,
         startTimeZone: '',
@@ -74,6 +82,13 @@ class Shift {
         id: scheduleDetails?.first.id
     );
 
+  }
+
+  TimeOfDay toTime(String? dateTime){
+    var splited = dateTime?.split(":");
+    int hour = int.parse(splited?[0] ?? "0");
+    int min = int.parse(splited?[1] ?? "0");
+    return TimeOfDay(hour: hour, minute: min);
   }
 }
 
@@ -110,12 +125,12 @@ class ScheduleDetails {
     endPeriod = json['endPeriod'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
-    // if (json['bookingInfo'] != null) {
-    //   bookingInfo = <BookingInfo>[];
-    //   json['bookingInfo'].forEach((v) {
-    //     bookingInfo!.add(new BookingInfo.fromJson(v));
-    //   });
-    // }
+    if (json['bookingInfo'] != null) {
+      bookingInfo = <BookingInfo>[];
+      json['bookingInfo'].forEach((v) {
+        bookingInfo!.add(new BookingInfo.fromJson(v));
+      });
+    }
     isBooked = json['isBooked'];
   }
 
@@ -129,9 +144,9 @@ class ScheduleDetails {
     data['endPeriod'] = this.endPeriod;
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
-    // if (this.bookingInfo != null) {
-    //   data['bookingInfo'] = this.bookingInfo!.map((v) => v.toJson()).toList();
-    // }
+    if (this.bookingInfo != null) {
+      data['bookingInfo'] = this.bookingInfo!.map((v) => v.toJson()).toList();
+    }
     data['isBooked'] = this.isBooked;
     return data;
   }
@@ -145,12 +160,8 @@ class BookingInfo {
   String? scheduleDetailId;
   String? tutorMeetingLink;
   String? studentMeetingLink;
-  Null? studentRequest;
-  Null? tutorReview;
-  Null? scoreByTutor;
   String? createdAt;
   String? updatedAt;
-  Null? recordUrl;
   bool? isDeleted;
 
   BookingInfo(
@@ -161,12 +172,8 @@ class BookingInfo {
         this.scheduleDetailId,
         this.tutorMeetingLink,
         this.studentMeetingLink,
-        this.studentRequest,
-        this.tutorReview,
-        this.scoreByTutor,
         this.createdAt,
         this.updatedAt,
-        this.recordUrl,
         this.isDeleted});
 
   BookingInfo.fromJson(Map<String, dynamic> json) {
@@ -177,12 +184,8 @@ class BookingInfo {
     scheduleDetailId = json['scheduleDetailId'];
     tutorMeetingLink = json['tutorMeetingLink'];
     studentMeetingLink = json['studentMeetingLink'];
-    studentRequest = json['studentRequest'];
-    tutorReview = json['tutorReview'];
-    scoreByTutor = json['scoreByTutor'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
-    recordUrl = json['recordUrl'];
     isDeleted = json['isDeleted'];
   }
 
@@ -195,12 +198,8 @@ class BookingInfo {
     data['scheduleDetailId'] = this.scheduleDetailId;
     data['tutorMeetingLink'] = this.tutorMeetingLink;
     data['studentMeetingLink'] = this.studentMeetingLink;
-    data['studentRequest'] = this.studentRequest;
-    data['tutorReview'] = this.tutorReview;
-    data['scoreByTutor'] = this.scoreByTutor;
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
-    data['recordUrl'] = this.recordUrl;
     data['isDeleted'] = this.isDeleted;
     return data;
   }

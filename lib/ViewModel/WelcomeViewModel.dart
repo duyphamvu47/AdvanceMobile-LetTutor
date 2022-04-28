@@ -26,7 +26,7 @@ class WelcomeViewModel extends Model {
 
 
   void checkLoginStatus() async{
-    // Authentication.instance.checkLoginStatus().then((value) => isLogin = value);
+    Authentication.instance.checkLoginStatus().then((value) => isLogin = value);
   }
 
 }
