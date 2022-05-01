@@ -139,6 +139,13 @@ class Authentication {
     print(refreshToken);
     print(userData?.id ?? "");
   }
+  Future<void> logOut() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.remove("access");
+    sharedPreferences.remove("refresh");
+    sharedPreferences.remove("user_data");
+    accessToken = refreshToken = userData = null;
+  }
 
 
   Future<bool> checkLoginStatus() async{
@@ -151,7 +158,7 @@ class Authentication {
   }
 
   Future<bool> checkTokenStatus() async{
-    await setUp();
+    // await setUp();
     DateTime acessTokenExpries = new DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(accessToken?.expires ?? "");
     if (DateTime.now().isBefore(acessTokenExpries)){
       return true;
@@ -276,6 +283,30 @@ class Authentication {
       final object = body['user'];
       userData = User.fromJson(object);
       saveInfo(accessToken!, refreshToken!);
+      return true;
+    });
+  }
+
+  Future<bool> forgotPassword(String email){
+    return http.post(Uri.parse("https://sandbox.api.lettutor.com/user/forgotPassword"),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'email': email,
+        })
+    ).then((http.Response response) {
+      final String jsonBody = response.body;
+      final int statusCode = response.statusCode;
+
+      if (statusCode != 200) {
+        if (kDebugMode) {
+          print(response.reasonPhrase);
+        }
+        // throw Exception("StatusCode:$statusCode, Error:${response.reasonPhrase}");
+        return false;
+      }
+
       return true;
     });
   }

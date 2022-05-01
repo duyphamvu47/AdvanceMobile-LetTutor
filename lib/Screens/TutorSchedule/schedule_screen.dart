@@ -44,10 +44,10 @@ class _SchedulePageState extends State<SchedulePage> {
     return ScopedModelDescendant<ScheduleViewModel>(
         builder: (BuildContext context, Widget? child, ScheduleViewModel model){
           return SfCalendar(
-              view: CalendarView.timelineWorkWeek,
+              view: CalendarView.timelineWeek,
               firstDayOfWeek: 1,
               timeSlotViewSettings:
-              TimeSlotViewSettings(startHour: 12, endHour: 24, timeInterval: Duration(minutes: 15)),
+              TimeSlotViewSettings(startHour: 12, endHour: 24),
               dataSource: MeetingDataSource(model.appointments),
             onTap: (CalendarTapDetails details) {
                 model.bookClass(details.appointments?.first);

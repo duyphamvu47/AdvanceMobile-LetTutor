@@ -3,6 +3,8 @@ import 'package:lettutor/Screens/Manage/components/setting_item.dart';
 import 'package:lettutor/Screens/ProfileSettings/profile_settings_screen.dart';
 import 'package:lettutor/Screens/Settings/settings_screen.dart';
 import 'package:lettutor/Screens/Welcome/welcome_screen.dart';
+import 'package:lettutor/Service/Authentication.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'header.dart';
 
 import '../../../constant.dart';
@@ -130,13 +132,14 @@ class Body extends StatelessWidget {
                     leadingIcon: "assets/icons/logout.svg",
                     bgIconColor: Color(0xFFf5bde8),
                     onTap: (){
-                      Navigator.push(
+                      logOut().then((value) =>  Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) {
                             return WelcomeScreen();
                           },
                         ),
+                      )
                       );
                     },
                   ),
@@ -147,4 +150,8 @@ class Body extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<void> logOut() async{
+  return await Authentication().logOut();
 }
