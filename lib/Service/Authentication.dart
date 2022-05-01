@@ -247,4 +247,36 @@ class Authentication {
       return false;
     }
   }
+
+  Future<bool> updateProfile(String phone, String name, String birthday){
+    return http.put(Uri.parse("https://sandbox.api.lettutor.com/user/info"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${accessToken?.token}'
+        },
+        body: jsonEncode({
+          'name': name,
+          'phone': phone,
+          'birthday': birthday,
+        })
+    ).then((http.Response response) {
+      final String jsonBody = response.body;
+      final int statusCode = response.statusCode;
+
+      if (statusCode != 200) {
+        if (kDebugMode) {
+          print(response.reasonPhrase);
+        }
+        // throw Exception("StatusCode:$statusCode, Error:${response.reasonPhrase}");
+        return false;
+      }
+
+      const JsonDecoder _decoder = JsonDecoder();
+      final body = _decoder.convert(jsonBody);
+      final object = body['user'];
+      userData = User.fromJson(object);
+      saveInfo(accessToken!, refreshToken!);
+      return true;
+    });
+  }
 }
