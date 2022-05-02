@@ -148,7 +148,7 @@ class API {
           'Authorization': 'Bearer $token'
         },
         body: jsonEncode({
-          'scheduleDetailIds': ID
+          'scheduleDetailIds': [ID]
         })
     ).then((http.Response response) {
       final String jsonBody = response.body;

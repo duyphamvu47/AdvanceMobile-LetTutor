@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:lettutor/ViewModel/MyCoursesViewModel.dart';
+import 'package:lettutor/components/rounded_button.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
@@ -50,14 +51,52 @@ class _MySchedule extends State<MySchedule> {
             view: CalendarView.timelineDay,
             firstDayOfWeek: 1,
             timeSlotViewSettings:
-            TimeSlotViewSettings(startHour: 12, endHour: 24, timeInterval: Duration(minutes: 15)),
+            TimeSlotViewSettings(startHour: 12, endHour: 24),
             dataSource: MeetingDataSource(model.appointments),
             onTap: (CalendarTapDetails details) {
 
+            },
+            onLongPress: (CalendarLongPressDetails details){
+                  () => showDialog(
+                context: context,
+                builder: (context) => buildDeleteAlert(details.appointments?.first),
+                barrierDismissible: false,
+              );
             },
           );
         }
     );
   }
+}
 
+Widget buildDeleteAlert(Appointment appointment){
+  return AlertDialog(
+    content: Form(
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Delete this appointment ?',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 22,
+              ),
+            ),
+            const SizedBox(height: 8),
+            SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  RoundedButton(text: "Cancel", color: Colors.white, textColor: Colors.black , press: (){}),
+                  RoundedButton(text: "Delete", color: kPrimaryColor, textColor: Colors.white , press: (){})
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    ),
+  );
 }

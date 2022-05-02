@@ -32,14 +32,17 @@ class ScheduleViewModel extends Model {
     notifyListeners();
   }
 
-  void bookClass(Appointment appointment) async{
-    String ID = appointment.id as String;
+  Future<bool> bookClass(String ID) async{
+
+    return await API.instance.bookClass(ID);
     print(ID);
     if (ID.isNotEmpty){
       API.instance.bookClass(ID).then((value) {
         if (value){
           fetchData();
+          return true;
         }
+        return false;
       });
     }
   }

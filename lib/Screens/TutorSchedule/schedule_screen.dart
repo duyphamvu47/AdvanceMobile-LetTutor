@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:lettutor/Utils.dart';
 import 'package:lettutor/ViewModel/ScheduleViewModel.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -50,7 +51,7 @@ class _SchedulePageState extends State<SchedulePage> {
               TimeSlotViewSettings(startHour: 12, endHour: 24),
               dataSource: MeetingDataSource(model.appointments),
             onTap: (CalendarTapDetails details) {
-                model.bookClass(details.appointments?.first);
+              boolClass(context, model, details.appointments?.first);
             },
           );
         }
@@ -112,5 +113,24 @@ class _SchedulePageState extends State<SchedulePage> {
 class MeetingDataSource extends CalendarDataSource {
   MeetingDataSource(List<Appointment> shiftCollection) {
     appointments = shiftCollection;
+  }
+}
+
+
+void boolClass(BuildContext context, ScheduleViewModel model, Appointment appointment) async {
+  String ID = appointment.id as String;
+  if (ID.isNotEmpty){
+    model.bookClass(ID).then((value) {
+      if (value){
+        model.fetchData();
+        Utils.showSnackBar(context, "Booking successfull. Reloading data");
+      }
+      else{
+        Utils.showSnackBar(context, "Booking fail");
+      }
+    });
+  }
+  else {
+    Utils.showSnackBar(context, "Booking fail");
   }
 }
