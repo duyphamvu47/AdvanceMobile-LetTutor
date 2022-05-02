@@ -12,7 +12,6 @@ import '../data/courses_json.dart';
 
 class ResetPasswordViewModel extends Model {
   static final ResetPasswordViewModel instance = ResetPasswordViewModel._internal();
-  var sharedPreferences;
   Authentication authentication = Authentication.instance;
 
   String password_ = "";
@@ -23,16 +22,11 @@ class ResetPasswordViewModel extends Model {
   }
 
   ResetPasswordViewModel._internal() {
-    setUp();
   }
 
-  void setUp() async{
-    sharedPreferences = await SharedPreferences.getInstance();
-  }
 
   Future<bool> changePassword() async{
-    String ID = sharedPreferences.getString("forgot_password");
-    return await authentication.changePassword("user_" + ID, password);
+    return await authentication.changePassword(password, password_);
   }
 
 

@@ -243,18 +243,6 @@ class Authentication {
     });
   }
 
-  Future<bool> changePassword(String ID, String password) async{
-    var isExist = await isUserExistence(ID);
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    if (isExist){
-      preferences.setString(ID, password);
-      return true;
-    }
-    else{
-      return false;
-    }
-  }
-
   Future<bool> updateProfile(String phone, String name, String birthday){
     return http.put(Uri.parse("https://sandbox.api.lettutor.com/user/info"),
         headers: {
@@ -294,6 +282,32 @@ class Authentication {
         },
         body: jsonEncode({
           'email': email,
+        })
+    ).then((http.Response response) {
+      final String jsonBody = response.body;
+      final int statusCode = response.statusCode;
+
+      if (statusCode != 200) {
+        if (kDebugMode) {
+          print(response.reasonPhrase);
+        }
+        // throw Exception("StatusCode:$statusCode, Error:${response.reasonPhrase}");
+        return false;
+      }
+
+      return true;
+    });
+  }
+
+  Future<bool> changePassword(String oldPass, String newPass){
+    return http.post(Uri.parse("https://sandbox.api.lettutor.com/auth/change-password"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${accessToken?.token}'
+        },
+        body: jsonEncode({
+          'password': oldPass,
+          'newPassword': newPass
         })
     ).then((http.Response response) {
       final String jsonBody = response.body;
