@@ -3,7 +3,12 @@ import 'package:lettutor/constant.dart';
 
 
 class WaitingScreen extends StatefulWidget {
-  WaitingScreen({Key? key}) : super(key: key);
+  const WaitingScreen({Key? key,
+    required this.beginTime,
+    required this.endTime}) : super(key: key);
+
+  final DateTime beginTime;
+  final DateTime endTime;
 
   @override
   _WaitingScreen createState() => _WaitingScreen();
@@ -12,7 +17,7 @@ class WaitingScreen extends StatefulWidget {
 class _WaitingScreen extends State<WaitingScreen> with TickerProviderStateMixin {
   int _counter = 0;
   late AnimationController _controller;
-  int levelClock = 3600;
+  // int levelClock = widget.beginTime.difference(widget.endTime).inSeconds;
 
   void _incrementCounter() {
     setState(() {
@@ -34,7 +39,7 @@ class _WaitingScreen extends State<WaitingScreen> with TickerProviderStateMixin 
         vsync: this,
         duration: Duration(
             seconds:
-            levelClock) // gameData.levelClock is a user entered number elsewhere in the applciation
+            calWaitingTime(widget.beginTime, widget.endTime)) // gameData.levelClock is a user entered number elsewhere in the applciation
     );
 
     _controller.forward();
@@ -52,7 +57,7 @@ class _WaitingScreen extends State<WaitingScreen> with TickerProviderStateMixin 
             ),
             Countdown(
               animation: StepTween(
-                begin: levelClock, // THIS IS A USER ENTERED NUMBER
+                begin: calWaitingTime(widget.beginTime, widget.endTime), // THIS IS A USER ENTERED NUMBER
                 end: 0,
               ).animate(_controller),
             ),
@@ -79,6 +84,10 @@ class Countdown extends AnimatedWidget {
     print('inSeconds ${clockTimer.inSeconds.toString()}');
     print('inSeconds.remainder ${clockTimer.inSeconds.remainder(60).toString()}');
 
+    if (animation.value == 0){
+      // Navigate to class
+    }
+
     return Text(
       "$timerText",
       style: TextStyle(
@@ -87,4 +96,8 @@ class Countdown extends AnimatedWidget {
       ),
     );
   }
+}
+
+int calWaitingTime(DateTime begin, DateTime end){
+  return begin.difference(end).inSeconds;
 }

@@ -133,19 +133,19 @@ class _CourseDetail extends State<CourseDetail>{
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               RoundedButton(text: isMyCourse ? "Go to class" : "Enroll", press: () {
-                                if (isMyCourse){
-                                  // Go to waiting screen
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                        builder: (context){
-                                          return WaitingScreen();
-                                        }
-                                    ),
-                                  );
-                                } else{
-                                  enrollCourse().then((value) {
-                                  });
-                                }
+                                // if (isMyCourse){
+                                //   // Go to waiting screen
+                                //   Navigator.of(context).push(
+                                //     MaterialPageRoute(
+                                //         builder: (context){
+                                //           return WaitingScreen();
+                                //         }
+                                //     ),
+                                //   );
+                                // } else{
+                                //   enrollCourse().then((value) {
+                                //   });
+                                // }
                               }),
                             ],
                           ),

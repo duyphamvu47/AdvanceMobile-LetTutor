@@ -32,5 +32,13 @@ class MyScheduleViewModel extends Model {
     notifyListeners();
   }
 
+  Shift findCourseWithID(String ID){
+    return shifts.firstWhere((element) => element.id == ID);
+  }
+
+  Future<bool> deleteACourse(String ID) async{
+    return await API.instance.deleteClass(ID);
+  }
+
 
 }
