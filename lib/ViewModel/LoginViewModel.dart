@@ -35,7 +35,7 @@ class LoginViewModel extends Model {
   Future<bool> authenticate() async{
     if (ID.isEmpty || password.isEmpty) return false;
 
-    return await authentication.logIn("duyphamvu47@gmail.com", "Vuduy123");
+    return await authentication.logIn("student@lettutor.com", "123456");
   }
 
 

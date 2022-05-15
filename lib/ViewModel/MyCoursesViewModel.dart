@@ -26,7 +26,18 @@ class MyScheduleViewModel extends Model {
   }
 
   void fetchData() async {
-    shifts = await API.instance.fetchMySchedule();
+    bool flag = true;
+    int page = 1;
+    while (flag){
+      List<Shift> temp = await API.instance.fetchMySchedule(page);
+      shifts.addAll(temp);
+      if (temp.length != 10){
+        flag = false;
+      }
+      else{
+        page++;
+      }
+    }
     appointments = shifts.map((e) => e.toAppointment()).toList();
     print("Fetch " + appointments.length.toString() + " shitfts");
     notifyListeners();

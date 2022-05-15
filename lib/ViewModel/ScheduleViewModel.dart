@@ -17,6 +17,7 @@ class ScheduleViewModel extends Model {
   List<Shift> shifts = [];
   List<Appointment> appointments = [];
   String ID = "";
+  bool isLoading = true;
 
   factory ScheduleViewModel() {
     return instance;
@@ -29,22 +30,13 @@ class ScheduleViewModel extends Model {
     shifts = await API.instance.fetchTutorSchedule(ID);
     appointments = shifts.map((e) => e.toAppointment()).toList();
     print("Fetch " + appointments.length.toString() + " shitfts");
+    isLoading = false;
     notifyListeners();
   }
 
   Future<bool> bookClass(String ID) async{
 
     return await API.instance.bookClass(ID);
-    print(ID);
-    if (ID.isNotEmpty){
-      API.instance.bookClass(ID).then((value) {
-        if (value){
-          fetchData();
-          return true;
-        }
-        return false;
-      });
-    }
   }
 
 }

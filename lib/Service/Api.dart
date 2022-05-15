@@ -132,6 +132,7 @@ class API {
       const JsonDecoder _decoder = JsonDecoder();
       final body = _decoder.convert(jsonBody);
       final List schedule = body['data'];
+      schedule.forEach((element) {print(element);});
       final List<Shift> shifts = schedule.map((e) => Shift.fromJson(e)).toList();
       return shifts;
     });
@@ -166,12 +167,12 @@ class API {
     });
   }
 
-  Future<List<Shift>> fetchMySchedule(){
+  Future<List<Shift>> fetchMySchedule(int page){
     String? Token = Authentication.instance.accessToken?.token;
     if (Token != null && token != Token){
       token = Token;
     }
-    return http.post(Uri.parse("https://sandbox.api.lettutor.com/schedule"),
+    return http.get(Uri.parse("https://sandbox.api.lettutor.com/booking/list/student?page=$page&perPage=10&dateTimeLte=1639805436469&orderBy=meeting&sortBy=desc"),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token'
@@ -190,7 +191,7 @@ class API {
 
       const JsonDecoder _decoder = JsonDecoder();
       final body = _decoder.convert(jsonBody);
-      final List schedule = body['data'];
+      final List schedule = body['data']['rows'];
       final List<Shift> shifts = schedule.map((e) => Shift.fromJson(e)).toList();
       return shifts;
     });

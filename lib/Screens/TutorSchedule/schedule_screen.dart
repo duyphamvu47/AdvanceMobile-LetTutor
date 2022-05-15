@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:lettutor/Utils.dart';
 import 'package:lettutor/ViewModel/ScheduleViewModel.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -18,6 +19,7 @@ class SchedulePage extends StatefulWidget {
 class _SchedulePageState extends State<SchedulePage> {
   late MeetingDataSource _events;
   late List<Appointment> _shiftCollection;
+  bool isLoading = true;
 
 
   @override
@@ -42,19 +44,35 @@ class _SchedulePageState extends State<SchedulePage> {
   }
 
   Widget getBody(){
-    return ScopedModelDescendant<ScheduleViewModel>(
-        builder: (BuildContext context, Widget? child, ScheduleViewModel model){
-          return SfCalendar(
-              view: CalendarView.timelineWeek,
-              firstDayOfWeek: 1,
-              timeSlotViewSettings:
-              TimeSlotViewSettings(startHour: 12, endHour: 24),
-              dataSource: MeetingDataSource(model.appointments),
-            onTap: (CalendarTapDetails details) {
-              boolClass(context, model, details.appointments?.first);
-            },
-          );
-        }
+    return Scaffold(
+      body: ScopedModelDescendant<ScheduleViewModel>(
+          builder: (BuildContext context, Widget? child, ScheduleViewModel model){
+            if (model.isLoading) {
+              return loadingScreen();
+            }
+            else {
+              return SfCalendar(
+                      view: CalendarView.timelineWeek,
+                      firstDayOfWeek: 1,
+                      timeSlotViewSettings:
+                      TimeSlotViewSettings(startHour: 12, endHour: 24),
+                      dataSource: MeetingDataSource(model.appointments),
+                      onTap: (CalendarTapDetails details) {
+                      boolClass(context, model, details.appointments?.first);
+                      },
+                    );
+            }
+          }
+      ),
+    );
+  }
+
+  Widget loadingScreen(){
+    return Center(
+      child: SpinKitCircle(
+        size: 140,
+        color: Colors.grey,
+      )
     );
   }
 
@@ -119,6 +137,7 @@ class MeetingDataSource extends CalendarDataSource {
 
 void boolClass(BuildContext context, ScheduleViewModel model, Appointment appointment) async {
   String ID = appointment.id as String;
+  print(ID);
   if (ID.isNotEmpty){
     model.bookClass(ID).then((value) {
       if (value){

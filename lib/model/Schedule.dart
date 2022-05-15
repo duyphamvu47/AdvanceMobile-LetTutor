@@ -69,9 +69,9 @@ class Shift {
     DateTime endDate = DateTime.fromMillisecondsSinceEpoch(endTimestamp ?? 0);
     String subject = (isBooked ?? false) ? "Full" : "Empty";
     Duration diff = startDate.difference(endDate);
-    print("Begin: " + DateTime(startDate.year, startDate.month, startDate.day, startTime.hour, startTime.minute).toString());
-    print("End: " + DateTime(endDate.year, endDate.month, endDate.day, endTime.hour, endTime.minute).toString());
-    print("-----------");
+    if (isBooked ?? false){
+      print("Booked:" + (id ?? ""));
+    }
     return  Appointment(
         startTime: startDate,
         endTime: startDate.add(Duration(minutes: diff.inMinutes)),
