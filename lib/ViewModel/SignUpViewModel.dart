@@ -39,21 +39,11 @@ class SignUpViewModel extends Model {
     sharedPreferences = await SharedPreferences.getInstance();
   }
 
-  SignUpResult signUp(){
-    String checkID = "";
-    checkID = sharedPreferences.getString("user_" + ID);
-    if (checkID != null){
-      return SignUpResult.existed;
+  Future<bool> signUp() async{
+    if (password != password_){
+      return false;
     }
-    else{
-      if (password != password_){
-        return SignUpResult.notMatch;
-      }
-      else{
-        sharedPreferences.setString("user_" + ID, password);
-        print("user_" + ID);
-        return SignUpResult.success;
-      }
-    }
+
+    return await Authentication.instance.signUp(ID, password);
   }
 }

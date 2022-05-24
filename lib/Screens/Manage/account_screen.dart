@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/Screens/Manage/components/body.dart';
+import 'package:lettutor/Service/Authentication.dart';
+import 'package:lettutor/ViewModel/ManagementPageViewModel.dart';
+import 'package:scoped_model/scoped_model.dart';
+import '../../model/User.dart';
 import 'components/header.dart';
 
 class ManagementPage extends StatelessWidget {
@@ -9,16 +13,23 @@ class ManagementPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return
-      Scaffold(
-        body: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Header(
-                name: 'Duy',
-                avatar: Image.asset("assets/images/user_profile.jpg"),
-              ),
-              Body(),
-            ],
+      ScopedModel(
+        model: ManagementPageViewModel.instance,
+        child: Scaffold(
+          body: ScopedModelDescendant<ManagementPageViewModel>(
+            builder: (BuildContext context, Widget? child, ManagementPageViewModel model){
+              return SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    Header(
+                      name: model.user?.name ?? "",
+                      avatar: Image.asset(model.user?.avatar ?? "assets/images/user_profile.jpg"),
+                    ),
+                    Body(),
+                  ],
+                ),
+              );
+            }
           ),
         ),
       );

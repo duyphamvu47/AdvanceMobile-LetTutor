@@ -41,7 +41,7 @@ class Body extends StatelessWidget {
                 ),
                 SizedBox(height: size.height * 0.03,),
                 RoundedInputField(
-                  hint: "Username",
+                  hint: "Email",
                   onChanged: (value){
                     model.ID = value;
                   },
@@ -84,20 +84,22 @@ class Body extends StatelessWidget {
   }
 
   void loginBtnPress(BuildContext context, LoginViewModel model) async{
-    var result = await model.authenticate();
-    if (result){
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) {
-            return RootApp();
-          },
-        ),
-      );
-    }
-    else{
-      loginFail(context);
-    }
+    model.authenticate().then((result) {
+      if (result){
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return RootApp();
+            },
+          ),
+        );
+      }
+      else{
+        loginFail(context);
+      }
+    });
+
   }
 
 }

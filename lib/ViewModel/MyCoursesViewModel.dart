@@ -6,36 +6,55 @@ import 'package:lettutor/model/Course.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lettutor/Service/Api.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../data/courses_json.dart';
+import '../model/MyAppointment.dart';
+import '../model/Schedule.dart';
 
 
-class MyCourseViewModel extends Model {
-  static final MyCourseViewModel instance = MyCourseViewModel._internal();
+class MyScheduleViewModel extends Model {
+  static final MyScheduleViewModel instance = MyScheduleViewModel._internal();
 
-  List<Course> courseList = [];
+  List<MyAppointment> shifts = [];
+  List<Appointment> appointments = [];
+  bool isLoading = true;
 
-  factory MyCourseViewModel() {
+  factory MyScheduleViewModel() {
     return instance;
   }
 
-  MyCourseViewModel._internal() {
-    readJson();
+  MyScheduleViewModel._internal() {
   }
 
-
-
-  Future<void> readJson() async {
-    courseList = await API.instance.fetchMyCourse();
+  void fetchData() async {
+    isLoading = true;
+    notifyListeners();
+    bool flag = true;
+    int page = 1;
+    while (flag){
+      List<MyAppointment> temp = await API.instance.fetchMySchedule(page);
+      shifts.addAll(temp);
+      if (temp.length != 50){
+        flag = false;
+      }
+      else{
+        page++;
+      }
+    }
+    appointments = shifts.map((e) => e.toAppointment()).toList();
+    print("Fetch " + appointments.length.toString() + " shitfts");
+    isLoading = false;
     notifyListeners();
   }
 
-
-  List<Course> getCourseList(){
-    readJson();
-    return courseList;
+  MyAppointment findCourseWithID(String ID){
+    return shifts.firstWhere((element) => element.scheduleDetailInfo?.id == ID);
   }
 
+  Future<bool> deleteACourse(String ID) async{
+    return await API.instance.deleteClass(ID);
+  }
 
 
 }

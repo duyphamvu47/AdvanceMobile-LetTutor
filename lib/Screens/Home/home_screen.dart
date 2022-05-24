@@ -9,7 +9,6 @@ import 'components/custom_heading.dart';
 import '../../components/custom_search_field.dart';
 import 'components/custom_title.dart';
 import '../../constant.dart';
-import '../../data/courses_json.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -73,7 +72,7 @@ class _HomePageState extends State<HomePage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             CustomHeading(
-                              title: 'Hi, ${userName[0]}!',
+                              title: 'Hi, ${model.user?.name ?? ""}!',
                               subTitle: 'Let\'s start learning.',
                               color: Colors.white,
                             ),
@@ -82,7 +81,7 @@ class _HomePageState extends State<HomePage> {
                               width: spacer,
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(100),
-                                child: Image.asset("assets/images/user_profile.jpg",
+                                child: Image.asset(model.user?.avatar ?? "assets/images/user_profile.jpg",
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -95,6 +94,8 @@ class _HomePageState extends State<HomePage> {
                         CustomSearchField(
                           hintField: 'Try "Something"',
                           backgroundColor: background,
+                          onChanged: (value){},
+                          onTap: (){},
                         ),
                         SizedBox(height: spacer - 30.0),
 

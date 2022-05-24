@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:lettutor/Screens/Manage/components/setting_item.dart';
 import 'package:lettutor/Screens/ProfileSettings/profile_settings_screen.dart';
+import 'package:lettutor/Screens/ResetPasword/reset_password_screen.dart';
 import 'package:lettutor/Screens/Settings/settings_screen.dart';
 import 'package:lettutor/Screens/Welcome/welcome_screen.dart';
+import 'package:lettutor/Service/Authentication.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'header.dart';
 
 import '../../../constant.dart';
@@ -53,11 +56,18 @@ class Body extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 45),
                     child: Divider(height: 0, color: Colors.grey.withOpacity(0.8),),
                   ),
-                  SettingItem(title: "Schedule",
-                    leadingIcon: "assets/icons/schedule.svg",
+                  SettingItem(title: "Password",
+                    leadingIcon: "assets/icons/password.svg",
                     bgIconColor: Color(0xFFa2e1a6),
                     onTap: (){
-
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return ResetPasswordScreen();
+                          },
+                        ),
+                      );
                     },
                   ),
                   Padding(
@@ -130,13 +140,14 @@ class Body extends StatelessWidget {
                     leadingIcon: "assets/icons/logout.svg",
                     bgIconColor: Color(0xFFf5bde8),
                     onTap: (){
-                      Navigator.push(
+                      logOut().then((value) =>  Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) {
                             return WelcomeScreen();
                           },
                         ),
+                      )
                       );
                     },
                   ),
@@ -147,4 +158,8 @@ class Body extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<void> logOut() async{
+  return await Authentication().logOut();
 }

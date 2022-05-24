@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lettutor/Screens/Login/components/forgot_password_title.dart';
 import 'package:lettutor/Screens/Login/components/rounded_input_field.dart';
 import 'package:lettutor/Screens/Login/components/rounded_password_field.dart';
 import 'package:lettutor/Screens/Login/login_screen.dart';
+import 'package:lettutor/Service/Authentication.dart';
 import 'package:lettutor/Utils.dart';
 import 'package:lettutor/components/rounded_button.dart';
 import 'package:lettutor/ViewModel/ResetPasswordViewModel.dart';
@@ -41,7 +44,7 @@ class Body extends StatelessWidget {
                 onChanged: (value){
                   model.password = value;
                 },
-                hint: "Your new password",
+                hint: "Your current password",
               ),
               RoundedPasswordField(
                 onChanged: (value){
@@ -64,17 +67,25 @@ class Body extends StatelessWidget {
   }
 
   void buttonPress(ResetPasswordViewModel model, BuildContext context) async{
-    bool res = await model.changePassword();
-    if (res){
-      Navigator.push(context, MaterialPageRoute(
-        builder: (context) {
-          return LoginScreen();
-        },
-      ),
-      );
+
+
+    if (model.password_ == model.password){
+      Utils.showSnackBar(context, "New password must different from old password");
+      return;
     }
     else{
-      Utils.showSnackBar(context, "Your passwords are not match");
+      model.changePassword().then((value) {
+        if (value){
+          Utils.showSnackBar(context, "Done! You'll be navigate to the Login Screen");
+          Authentication.instance.logOut();
+          Timer(Duration(seconds: 4), () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {return LoginScreen();},),);
+          });
+        }
+        else{
+          Utils.showSnackBar(context, "Check your password !");
+        }
+      });
     }
   }
 }

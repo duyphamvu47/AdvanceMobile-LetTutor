@@ -8,11 +8,11 @@ class Tutor {
   String? name;
   String? country;
   String? phone;
-  Null? language;
+  String? language;
   String? birthday;
   bool? requestPassword;
   bool? isActivated;
-  Null? isPhoneActivated;
+  bool? isPhoneActivated;
   Null? requireNote;
   int? timezone;
   Null? phoneAuth;
@@ -36,7 +36,6 @@ class Tutor {
   Null? resume;
   Null? isNative;
   int? price;
-  bool? isOnline;
 
   Tutor(
       {this.level,
@@ -75,8 +74,7 @@ class Tutor {
         this.specialties,
         this.resume,
         this.isNative,
-        this.price,
-        this.isOnline});
+        this.price});
 
   Tutor.fromJson(Map<String, dynamic> json) {
     level = json['level'];
@@ -100,12 +98,6 @@ class Tutor {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     deletedAt = json['deletedAt'];
-    if (json['feedbacks'] != null) {
-      feedbacks = <Feedbacks>[];
-      json['feedbacks'].forEach((v) {
-        feedbacks!.add(new Feedbacks.fromJson(v));
-      });
-    }
     id = json['id'];
     userId = json['userId'];
     video = json['video'];
@@ -121,7 +113,6 @@ class Tutor {
     resume = json['resume'];
     isNative = json['isNative'];
     price = json['price'];
-    isOnline = json['isOnline'];
   }
 
   Map<String, dynamic> toJson() {
@@ -147,9 +138,6 @@ class Tutor {
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
     data['deletedAt'] = this.deletedAt;
-    if (this.feedbacks != null) {
-      data['feedbacks'] = this.feedbacks!.map((v) => v.toJson()).toList();
-    }
     data['id'] = this.id;
     data['userId'] = this.userId;
     data['video'] = this.video;
@@ -165,7 +153,6 @@ class Tutor {
     data['resume'] = this.resume;
     data['isNative'] = this.isNative;
     data['price'] = this.price;
-    data['isOnline'] = this.isOnline;
     return data;
   }
 }

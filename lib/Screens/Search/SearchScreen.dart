@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:lettutor/Screens/Search/components/ResultList.dart';
 import 'package:lettutor/Screens/Search/components/search_result_cell.dart';
 import 'package:lettutor/ViewModel/ExploreViewModel.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -41,6 +42,7 @@ class _ExplorePageState extends State<ExplorePage> {
 
   Widget getBody() {
     var size = MediaQuery.of(context).size;
+    String keyword = "";
     return ScopedModelDescendant<ExploredViewModel>(
       builder: (BuildContext context, Widget? child, ExploredViewModel model){
         return SingleChildScrollView(
@@ -62,6 +64,12 @@ class _ExplorePageState extends State<ExplorePage> {
               CustomSearchField(
                 hintField: 'Search me',
                 backgroundColor: Colors.white,
+                onChanged: (value){
+                  keyword = value;
+                },
+                onTap: (){
+                  model.searchCourse(keyword);
+                },
               ),
               SizedBox(height: size.height * 0.03),
 
@@ -87,19 +95,21 @@ class _ExplorePageState extends State<ExplorePage> {
 
               SizedBox(height: smallSpacer),
 
+              ResultList(),
+
               // Search result
-              SearchResultCell(
-                  name: "Nguyen Van A",
-                  avatar: Image.asset("assets/images/user_profile.jpg"),
-                  specialize: 'Mobile (Android)',
-                  onPress: () {}
-              ),
-              SearchResultCell(
-                  name: "Nguyen Van A",
-                  avatar: Image.asset("assets/images/user_profile.jpg"),
-                  specialize: 'Mobile (iOS)',
-                  onPress: () {}
-              ),
+              // SearchResultCell(
+              //     name: "Nguyen Van A",
+              //     avatar: Image.asset("assets/images/user_profile.jpg"),
+              //     specialize: 'Mobile (Android)',
+              //     onPress: () {}
+              // ),
+              // SearchResultCell(
+              //     name: "Nguyen Van A",
+              //     avatar: Image.asset("assets/images/user_profile.jpg"),
+              //     specialize: 'Mobile (iOS)',
+              //     onPress: () {}
+              // ),
             ],
           ),
         );

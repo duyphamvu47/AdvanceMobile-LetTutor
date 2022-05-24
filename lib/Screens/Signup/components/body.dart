@@ -36,7 +36,7 @@ class Body extends StatelessWidget{
                   height: size.height * 0.35,
                 ),
                 RoundedInputField(
-                    hint: "Username",
+                    hint: "Email",
                     onChanged: (value){
                       model.ID = value;
                     }
@@ -58,7 +58,8 @@ class Body extends StatelessWidget{
                         Utils.showSnackBar(context, "Empty username or password");
                       }
                       else{
-                        handleSignUpResult(context, model.signUp());
+                        signUpButtonPress(context, model);
+                        // handleSignUpResult(context, model.signUp());
                       }
                     }
                 ),
@@ -104,20 +105,34 @@ class Body extends StatelessWidget{
   }
 
 
-  void handleSignUpResult(BuildContext context, SignUpResult result){
-    if (result == SignUpResult.existed){
-      Utils.showSnackBar(context, "Username already existed");
+  void handleSignUpResult(BuildContext context, bool result){
+    if (result){
+      Utils.showSnackBar(context, "Sign up fail !");
     }
-    else if (result == SignUpResult.notMatch){
-      Utils.showSnackBar(context, "Passwords are not match");
-    }
-    else if (result == SignUpResult.success){
+    else {
       Utils.showSnackBar(context, "Sign up success, please log in");
       Navigator.push(context, MaterialPageRoute(
           builder: (context) {
             return LoginScreen();
           },
         ),
+      );
+    }
+  }
+
+
+  void signUpButtonPress(BuildContext context, SignUpViewModel model) async {
+    bool res = await model.signUp();
+    if (!res){
+      Utils.showSnackBar(context, "Sign up fail !");
+    }
+    else {
+      Utils.showSnackBar(context, "Sign up success, please log in");
+      Navigator.push(context, MaterialPageRoute(
+        builder: (context) {
+          return LoginScreen();
+        },
+      ),
       );
     }
   }

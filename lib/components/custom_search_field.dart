@@ -8,10 +8,14 @@ class CustomSearchField extends StatefulWidget {
     Key? key,
     required this.hintField,
     this.backgroundColor,
+    required this.onTap,
+    required this.onChanged,
   }) : super(key: key);
 
   final String hintField;
   final Color? backgroundColor;
+  final VoidCallback onTap;
+  final ValueChanged<String> onChanged;
 
   @override
   _CustomSearchFieldState createState() => _CustomSearchFieldState();
@@ -51,6 +55,7 @@ class _CustomSearchFieldState extends State<CustomSearchField> {
               height: 38,
               alignment: Alignment.topCenter,
               child: TextField(
+                onChanged: widget.onChanged,
                 style: TextStyle(fontSize: 15),
                 cursorColor: Colors.black,
                 decoration: InputDecoration(
@@ -82,10 +87,13 @@ class _CustomSearchFieldState extends State<CustomSearchField> {
               ],
             ),
             child: Container(
-              child: SvgPicture.asset(
-                "assets/icons/filter_icon.svg",
-                color: Colors.white,
-                height: 13.0,
+              child: GestureDetector(
+                onTap: widget.onTap,
+                child: SvgPicture.asset(
+                  "assets/icons/search_icon.svg",
+                  color: Colors.white,
+                  height: 13.0,
+                ),
               ),
             ),
           ),

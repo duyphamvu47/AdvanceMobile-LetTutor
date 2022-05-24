@@ -5,7 +5,10 @@ import '../../../constant.dart';
 class ProfileImageWithEditButton extends StatelessWidget {
   const ProfileImageWithEditButton({
     Key? key,
+    required this.image,
   }) : super(key: key);
+
+  final Image image;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +32,7 @@ class ProfileImageWithEditButton extends StatelessWidget {
               shape: BoxShape.circle,
               image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: Image.asset("assets/images/user_profile.jpg").image
+                  image: image.image,
               ),
             ),
           ),

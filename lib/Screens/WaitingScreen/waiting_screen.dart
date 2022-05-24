@@ -1,9 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:jitsi_meet/feature_flag/feature_flag.dart';
+import 'package:lettutor/Service/Authentication.dart';
 import 'package:lettutor/constant.dart';
+import 'package:jitsi_meet/jitsi_meet.dart';
+import 'package:lettutor/model/MyAppointment.dart';
+
+import '../../model/User.dart';
 
 
 class WaitingScreen extends StatefulWidget {
-  WaitingScreen({Key? key}) : super(key: key);
+  const WaitingScreen({Key? key,
+    required this.beginTime,
+    required this.endTime,
+    required this.data
+  }) : super(key: key);
+
+  final DateTime beginTime;
+  final DateTime endTime;
+  final MyAppointment data;
 
   @override
   _WaitingScreen createState() => _WaitingScreen();
@@ -12,7 +26,7 @@ class WaitingScreen extends StatefulWidget {
 class _WaitingScreen extends State<WaitingScreen> with TickerProviderStateMixin {
   int _counter = 0;
   late AnimationController _controller;
-  int levelClock = 3600;
+  // int levelClock = widget.beginTime.difference(widget.endTime).inSeconds;
 
   void _incrementCounter() {
     setState(() {
@@ -34,7 +48,7 @@ class _WaitingScreen extends State<WaitingScreen> with TickerProviderStateMixin 
         vsync: this,
         duration: Duration(
             seconds:
-            levelClock) // gameData.levelClock is a user entered number elsewhere in the applciation
+            calWaitingTime(widget.beginTime, widget.endTime)) // gameData.levelClock is a user entered number elsewhere in the applciation
     );
 
     _controller.forward();
@@ -52,9 +66,9 @@ class _WaitingScreen extends State<WaitingScreen> with TickerProviderStateMixin 
             ),
             Countdown(
               animation: StepTween(
-                begin: levelClock, // THIS IS A USER ENTERED NUMBER
+                begin: calWaitingTime(widget.beginTime, widget.endTime), // THIS IS A USER ENTERED NUMBER
                 end: 0,
-              ).animate(_controller),
+              ).animate(_controller), data: widget.data,
             ),
           ],
         ),
@@ -64,8 +78,9 @@ class _WaitingScreen extends State<WaitingScreen> with TickerProviderStateMixin 
 }
 
 class Countdown extends AnimatedWidget {
-  Countdown({required this.animation}) : super(listenable: animation);
+  Countdown({required this.data,required this.animation}) : super(listenable: animation);
   Animation<int> animation;
+  final MyAppointment data;
 
   @override
   build(BuildContext context) {
@@ -79,6 +94,11 @@ class Countdown extends AnimatedWidget {
     print('inSeconds ${clockTimer.inSeconds.toString()}');
     print('inSeconds.remainder ${clockTimer.inSeconds.remainder(60).toString()}');
 
+    if (animation.value == 0){
+      User? user = Authentication.instance.userData;
+      _joinMeeting(data, user);
+    }
+
     return Text(
       "$timerText",
       style: TextStyle(
@@ -86,5 +106,31 @@ class Countdown extends AnimatedWidget {
         color: kPrimaryColor,
       ),
     );
+  }
+}
+
+int calWaitingTime(DateTime begin, DateTime end){
+  return begin.difference(end).inSeconds;
+}
+
+_joinMeeting(MyAppointment data, User? user) async {
+  try {
+    FeatureFlag featureFlag = FeatureFlag();
+    featureFlag.welcomePageEnabled = false;
+    featureFlag.resolution = FeatureFlagVideoResolution.MD_RESOLUTION; // Limit video resolution to 360p
+
+    var options = JitsiMeetingOptions(room: "${data.userId}-${data.scheduleDetailInfo?.scheduleInfo!.tutorId}")
+      ..serverURL = "https://meet.lettutor.com${data.studentMeetingLink?.substring(6, data.studentMeetingLink?.length)}"
+      ..subject = "Learning"
+      ..userDisplayName = user?.name
+      ..userEmail = user?.email
+      ..userAvatarURL = user?.avatar // or .png
+      ..audioOnly = true
+      ..audioMuted = true
+      ..videoMuted = true;
+
+    await JitsiMeet.joinMeeting(options);
+  } catch (error) {
+    debugPrint("error: $error");
   }
 }

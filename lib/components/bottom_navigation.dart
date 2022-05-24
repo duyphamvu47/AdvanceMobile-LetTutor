@@ -26,7 +26,7 @@ class _RootAppState extends State<RootApp> {
   Widget getBody(BuildContext context) {
     List<Widget> pages = [
       HomePage(),
-      MyCoursesPage(),
+      MySchedule(),
       ExplorePage(),
       ManagementPage(),
     ];
