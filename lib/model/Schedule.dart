@@ -60,18 +60,10 @@ class Shift {
   }
   
   Appointment toAppointment(){
-    final now = DateTime.now();
-    TimeOfDay beginTime = toTime(this.startTime);
-    TimeOfDay finishTime = toTime(this.endTime);
-    DateTime startTime = DateTime(now.year, now.month, now.day, beginTime.hour, beginTime.minute);
-    DateTime endTime = DateTime(now.year, now.month, now.day, finishTime.hour, finishTime.minute);
     DateTime startDate = DateTime.fromMillisecondsSinceEpoch(startTimestamp ?? 0);
     DateTime endDate = DateTime.fromMillisecondsSinceEpoch(endTimestamp ?? 0);
     String subject = (isBooked ?? false) ? "Full" : "Empty";
     Duration diff = startDate.difference(endDate);
-    if (isBooked ?? false){
-      print("Booked:" + (id ?? ""));
-    }
     return  Appointment(
         startTime: startDate,
         endTime: startDate.add(Duration(minutes: diff.inMinutes)),
@@ -82,13 +74,6 @@ class Shift {
         id: scheduleDetails?.first.id
     );
 
-  }
-
-  TimeOfDay toTime(String? dateTime){
-    var splited = dateTime?.split(":");
-    int hour = int.parse(splited?[0] ?? "0");
-    int min = int.parse(splited?[1] ?? "0");
-    return TimeOfDay(hour: hour, minute: min);
   }
 }
 

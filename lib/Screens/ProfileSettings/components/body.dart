@@ -4,6 +4,7 @@ import 'package:lettutor/Screens/ProfileSettings/components/profile_image_with_e
 import 'package:lettutor/Service/Api.dart';
 import 'package:lettutor/Service/Authentication.dart';
 import 'package:lettutor/Utils.dart';
+import 'package:lettutor/ViewModel/ManagementPageViewModel.dart';
 import 'package:lettutor/ViewModel/ProfileViewModel.dart';
 import 'package:lettutor/constant.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -182,6 +183,8 @@ void saveBtnClicked(BuildContext context, ProfileViewModel model) async{
   }
   model.updateProfile().then((value) {
     if (value){
+      Authentication.instance.userData?.name = model.name;
+      ManagementPageViewModel.instance.reloadData();
       Navigator.of(context, rootNavigator: true).pop(context);
     }
     else{

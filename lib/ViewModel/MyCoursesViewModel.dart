@@ -9,14 +9,16 @@ import 'package:lettutor/Service/Api.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../data/courses_json.dart';
+import '../model/MyAppointment.dart';
 import '../model/Schedule.dart';
 
 
 class MyScheduleViewModel extends Model {
   static final MyScheduleViewModel instance = MyScheduleViewModel._internal();
 
-  List<Shift> shifts = [];
+  List<MyAppointment> shifts = [];
   List<Appointment> appointments = [];
+  bool isLoading = true;
 
   factory MyScheduleViewModel() {
     return instance;
@@ -26,12 +28,14 @@ class MyScheduleViewModel extends Model {
   }
 
   void fetchData() async {
+    isLoading = true;
+    notifyListeners();
     bool flag = true;
     int page = 1;
     while (flag){
-      List<Shift> temp = await API.instance.fetchMySchedule(page);
+      List<MyAppointment> temp = await API.instance.fetchMySchedule(page);
       shifts.addAll(temp);
-      if (temp.length != 10){
+      if (temp.length != 50){
         flag = false;
       }
       else{
@@ -40,11 +44,12 @@ class MyScheduleViewModel extends Model {
     }
     appointments = shifts.map((e) => e.toAppointment()).toList();
     print("Fetch " + appointments.length.toString() + " shitfts");
+    isLoading = false;
     notifyListeners();
   }
 
-  Shift findCourseWithID(String ID){
-    return shifts.firstWhere((element) => element.id == ID);
+  MyAppointment findCourseWithID(String ID){
+    return shifts.firstWhere((element) => element.scheduleDetailInfo?.id == ID);
   }
 
   Future<bool> deleteACourse(String ID) async{

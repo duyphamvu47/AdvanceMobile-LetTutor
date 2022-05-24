@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lettutor/Service/Authentication.dart';
 import 'package:lettutor/model/Course.dart';
+import 'package:lettutor/model/MyAppointment.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/Schedule.dart';
@@ -132,7 +133,6 @@ class API {
       const JsonDecoder _decoder = JsonDecoder();
       final body = _decoder.convert(jsonBody);
       final List schedule = body['data'];
-      schedule.forEach((element) {print(element);});
       final List<Shift> shifts = schedule.map((e) => Shift.fromJson(e)).toList();
       return shifts;
     });
@@ -167,12 +167,15 @@ class API {
     });
   }
 
-  Future<List<Shift>> fetchMySchedule(int page){
+  Future<List<MyAppointment>> fetchMySchedule(int page){
     String? Token = Authentication.instance.accessToken?.token;
     if (Token != null && token != Token){
       token = Token;
     }
-    return http.get(Uri.parse("https://sandbox.api.lettutor.com/booking/list/student?page=$page&perPage=10&dateTimeLte=1639805436469&orderBy=meeting&sortBy=desc"),
+    DateTime now = DateTime.now();
+    String timeStamp = now.millisecondsSinceEpoch.toString();
+    print(timeStamp);
+    return http.get(Uri.parse("https://sandbox.api.lettutor.com/booking/list/student?page=$page&perPage=50&dateTimeLte=$timeStamp&orderBy=meeting&sortBy=desc"),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token'
@@ -192,7 +195,7 @@ class API {
       const JsonDecoder _decoder = JsonDecoder();
       final body = _decoder.convert(jsonBody);
       final List schedule = body['data']['rows'];
-      final List<Shift> shifts = schedule.map((e) => Shift.fromJson(e)).toList();
+      final List<MyAppointment> shifts = schedule.map((e) => MyAppointment.fromJson(e)).toList();
       return shifts;
     });
   }

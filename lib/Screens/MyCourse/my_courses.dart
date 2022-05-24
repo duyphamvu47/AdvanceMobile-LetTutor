@@ -1,23 +1,19 @@
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:jitsi_meet/feature_flag/feature_flag.dart';
+import 'package:jitsi_meet/jitsi_meet.dart';
 import 'package:lettutor/Screens/WaitingScreen/waiting_screen.dart';
 import 'package:lettutor/Utils.dart';
 import 'package:lettutor/ViewModel/MyCoursesViewModel.dart';
 import 'package:lettutor/components/rounded_button.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-
+import '../../Service/Authentication.dart';
 import '../../constant.dart';
-import '../../data/courses_json.dart';
-import '../../model/Schedule.dart';
-import '../Home/components/custom_heading.dart';
-import '../Login/login_screen.dart';
+import '../../model/MyAppointment.dart';
+import '../../model/User.dart';
 import '../TutorSchedule/schedule_screen.dart';
-import 'components/custom_my_course_cell.dart';
-import 'components/my_course_header.dart';
-import 'components/my_course_list.dart';
 
 class MySchedule extends StatefulWidget {
   MySchedule({Key? key}) : super(key: key);
@@ -52,35 +48,61 @@ class _MySchedule extends State<MySchedule> {
   Widget getBody(){
     return ScopedModelDescendant<MyScheduleViewModel>(
         builder: (BuildContext context, Widget? child, MyScheduleViewModel model){
-          return SfCalendar(
-            view: CalendarView.timelineDay,
-            firstDayOfWeek: 1,
-            timeSlotViewSettings:
-            TimeSlotViewSettings(startHour: 12, endHour: 24),
-            dataSource: MeetingDataSource(model.appointments),
-            onTap: (CalendarTapDetails details) {
-              Shift shift = model.findCourseWithID(details.appointments?.first?.id);
-              DateTime now = DateTime.now();
-              DateTime beginTime = details.appointments?.first?.startTime;
-              DateTime endTime = details.appointments?.first?.endTime;
-              if (now.isAfter(beginTime) && now.isBefore(endTime)){
-                // GO to class
-              }
-              else{
-                Navigator.push(context, MaterialPageRoute(builder: (context) {return WaitingScreen(beginTime: now, endTime: beginTime);},),);
-              }
-            },
-            onLongPress: (CalendarLongPressDetails details){
-                  () => showDialog(
-                context: context,
-                builder: (context) => buildDeleteAlert(context, model, details.appointments?.first),
-                barrierDismissible: false,
-              );
-            },
-          );
+          if (model.isLoading){
+            return loadingScreen();
+          }
+          else{
+            return SfCalendar(
+              view: CalendarView.timelineDay,
+              firstDayOfWeek: 1,
+              timeSlotViewSettings:
+              TimeSlotViewSettings(startHour: 12, endHour: 24),
+              dataSource: MeetingDataSource(model.appointments),
+              onTap: (CalendarTapDetails details) {
+                MyAppointment shift = model.findCourseWithID(details.appointments?.first?.id);
+                DateTime now = DateTime.now();
+                DateTime beginTime = details.appointments?.first?.startTime;
+                DateTime endTime = details.appointments?.first?.endTime;
+                if (now.isAfter(beginTime) && now.isBefore(endTime)){
+                  User? user = Authentication.instance.userData;
+                  _joinMeeting(shift, user);
+                }
+                else if (now.isBefore(beginTime)){
+                  Navigator.push(
+                    context, MaterialPageRoute(builder: (context) {
+                      return WaitingScreen(beginTime: now, endTime: beginTime, data: shift);
+                      },
+                    ),
+                  );
+                }
+                else if (now.isAfter(endTime)){
+                  Utils.showSnackBar(context, "The class has finished");
+                }
+              },
+              onLongPress: (CalendarLongPressDetails details){
+                      print("LongPress");
+                      showDialog(
+                      context: context,
+                      builder: (context) => buildDeleteAlert(context, model, details.appointments?.first),
+                      barrierDismissible: false,
+                      );
+              },
+
+            );
+          }
         }
     );
   }
+
+  Widget loadingScreen(){
+    return Center(
+        child: SpinKitCircle(
+          size: 140,
+          color: Colors.grey,
+        )
+    );
+  }
+
 }
 
 Widget buildDeleteAlert(BuildContext context, MyScheduleViewModel model , Appointment appointment){
@@ -104,9 +126,10 @@ Widget buildDeleteAlert(BuildContext context, MyScheduleViewModel model , Appoin
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   RoundedButton(text: "Cancel", color: Colors.white, textColor: Colors.black , press: (){
-                    deleteClass(context, model, appointment.id as String);
+                    Navigator.pop(context);
                   }),
                   RoundedButton(text: "Delete", color: kPrimaryColor, textColor: Colors.white , press: (){
+                    deleteClass(context, model, appointment.id as String);
                     Navigator.pop(context);
                   })
                 ],
@@ -121,6 +144,7 @@ Widget buildDeleteAlert(BuildContext context, MyScheduleViewModel model , Appoin
 
 
 void deleteClass(BuildContext context, MyScheduleViewModel model, String ID){
+  print(ID);
   model.deleteACourse(ID).then((value) {
     if (value){
       Utils.showSnackBar(context, "Class has been deleted");
@@ -131,4 +155,30 @@ void deleteClass(BuildContext context, MyScheduleViewModel model, String ID){
       Navigator.pop(context);
     }
   });
+}
+
+_joinMeeting(MyAppointment data, User? user) async {
+  try {
+    FeatureFlag featureFlag = FeatureFlag();
+    featureFlag.welcomePageEnabled = false;
+    featureFlag.resolution = FeatureFlagVideoResolution
+        .MD_RESOLUTION; // Limit video resolution to 360p
+
+    var options = JitsiMeetingOptions(
+        room: "${data.userId}-${data.scheduleDetailInfo?.scheduleInfo!
+            .tutorId}")
+      ..serverURL = "https://meet.lettutor.com${data.studentMeetingLink
+          ?.substring(6, data.studentMeetingLink?.length)}"
+      ..subject = "Learning"
+      ..userDisplayName = user?.name
+      ..userEmail = user?.email
+      ..userAvatarURL = user?.avatar // or .png
+      ..audioOnly = true
+      ..audioMuted = true
+      ..videoMuted = true;
+
+    await JitsiMeet.joinMeeting(options);
+  } catch (error) {
+    debugPrint("error: $error");
+  }
 }

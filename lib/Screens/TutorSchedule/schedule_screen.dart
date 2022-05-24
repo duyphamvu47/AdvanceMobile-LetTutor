@@ -6,6 +6,8 @@ import 'package:lettutor/ViewModel/ScheduleViewModel.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
+import '../../ViewModel/MyCoursesViewModel.dart';
+
 class SchedulePage extends StatefulWidget {
   SchedulePage({Key? key, required this.title, required this.ID}) : super(key: key);
 
@@ -142,6 +144,7 @@ void boolClass(BuildContext context, ScheduleViewModel model, Appointment appoin
     model.bookClass(ID).then((value) {
       if (value){
         model.fetchData();
+        MyScheduleViewModel.instance.fetchData();
         Utils.showSnackBar(context, "Booking successfull. Reloading data");
       }
       else{
