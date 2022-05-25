@@ -54,10 +54,11 @@ class Body extends StatelessWidget{
                 RoundedButton(
                     text: "SIGN UP",
                     press: (){
-                      if (model.ID.isEmpty || model.password.isEmpty || model.password_.isEmpty){
-                        Utils.showSnackBar(context, "Empty username or password");
+                      if (model.ID.isEmpty || model.password.isEmpty || model.password_.isEmpty || !model.ID.contains("@")){
+                        Utils.showSnackBar(context, "Invalid username or password");
                       }
                       else{
+                        Utils.showSnackBar(context, "Signing up !!!");
                         signUpButtonPress(context, model);
                         // handleSignUpResult(context, model.signUp());
                       }

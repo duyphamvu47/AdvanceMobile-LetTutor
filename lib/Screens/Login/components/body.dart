@@ -4,6 +4,7 @@ import 'package:lettutor/Screens/Login/components/forgot_password_title.dart';
 import 'package:lettutor/Screens/Login/components/rounded_input_field.dart';
 import 'package:lettutor/Screens/Login/components/rounded_password_field.dart';
 import 'package:lettutor/Screens/Signup/sign_up_screen.dart';
+import 'package:lettutor/Service/Authentication.dart';
 import 'package:lettutor/ViewModel/LoginViewModel.dart';
 import 'package:lettutor/components/bottom_navigation.dart';
 import 'package:lettutor/components/rounded_button.dart';
@@ -86,6 +87,7 @@ class Body extends StatelessWidget {
   void loginBtnPress(BuildContext context, LoginViewModel model) async{
     model.authenticate().then((result) {
       if (result){
+        Authentication.instance.logOut();
         Navigator.push(
           context,
           MaterialPageRoute(

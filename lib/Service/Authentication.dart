@@ -91,8 +91,9 @@ class Authentication {
         if (kDebugMode) {
           print(response.reasonPhrase);
         }
-        throw Exception(
-            "StatusCode:$statusCode, Error:${response.reasonPhrase}");
+        return false;
+        // throw Exception(
+        //     "StatusCode:$statusCode, Error:${response.reasonPhrase}");
       }
 
       const JsonDecoder _decoder = JsonDecoder();
